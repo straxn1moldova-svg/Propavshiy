@@ -3,33 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Propavshiy — Android & C++ Developer</title>
+  <title>Propavshiy — Android & C++</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     
     body {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 0.95rem;
-      line-height: 1.5;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: 0.875rem;          /* основной текст ~14px */
+      line-height: 1.4;
+      color: #d1d5db;
     }
     
-    h1 { font-size: 2.75rem; }
-    h2 { font-size: 2rem; }
+    h1 {
+      font-size: 2.5rem;            /* имя меньше */
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+    
+    h2 {
+      font-size: 1.625rem;          /* заголовки секций */
+      font-weight: 600;
+    }
+    
     .pill {
+      font-size: 0.75rem;
+      padding: 0.375rem 0.75rem;
       transition: all 0.2s ease;
     }
     .pill:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 10px rgba(34, 211, 238, 0.3);
+      transform: scale(1.04);
+      box-shadow: 0 0 8px rgba(6, 182, 212, 0.3);
     }
     
     .track-card {
-      transition: all 0.25s ease;
+      transition: all 0.22s ease;
     }
     .track-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 18px -4px rgba(0,0,0,0.5);
+      transform: translateY(-4px);
     }
     
     .horizontal-scroll {
@@ -40,91 +51,89 @@
     }
     
     .tg-button {
-      transition: all 0.3s ease;
       background: #1f2937;
+      transition: all 0.28s ease;
     }
     .tg-button:hover {
-      transform: scale(1.06);
       background: #374151;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.5);
     }
     
     .bottom-player {
-      background: linear-gradient(180deg, #111827, #000000);
-      box-shadow: 0 -6px 20px -4px rgba(0,0,0,0.7);
+      background: linear-gradient(to top, #000, #111827);
+      box-shadow: 0 -4px 16px -2px rgba(0,0,0,0.8);
     }
     
-    .footer-note {
-      font-size: 0.75rem;
+    .tiny-footer {
+      font-size: 0.6875rem;         /* ~11px, как мелкий текст у Verturi */
       color: #6b7280;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
     }
   </style>
 </head>
-<body class="bg-black text-gray-300 min-h-screen overflow-x-hidden">
+<body class="bg-black min-h-screen overflow-x-hidden">
 
-  <!-- HERO + Telegram кнопка + сразу треки -->
-  <header class="pt-12 pb-8 text-center">
+  <!-- Верх: аватар + имя + кнопка -->
+  <div class="pt-10 pb-6 text-center">
     <div class="max-w-md mx-auto px-5">
       <img src="https://files.catbox.moe/yonydu.jpg" 
-           class="w-28 h-28 mx-auto rounded-2xl border-2 border-gray-800 shadow-xl object-cover"
+           class="w-24 h-24 mx-auto rounded-xl border border-gray-800 shadow-lg object-cover"
            alt="Propavshiy">
       
-      <h1 class="text-5xl font-bold mt-5 tracking-tight">Propavshiy</h1>
-      <p class="text-lg mt-1 text-cyan-500 font-medium">Android • C++</p>
+      <h1 class="mt-4">Propavshiy</h1>
+      <p class="mt-1 text-sm text-cyan-600 font-medium">Android • C++</p>
 
-      <!-- Кнопка Telegram (серая, под фон) -->
+      <!-- Telegram кнопка -->
       <a href="https://t.me/Propavshiy_Wexon" target="_blank"
-         class="tg-button inline-flex items-center justify-center gap-2.5 mt-7 px-9 py-3.5 text-base font-medium rounded-xl border border-gray-700 text-gray-200 w-64 mx-auto">
-        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.896 16.312c-.164.468-.508.84-.972 1.016-.684.26-1.604.062-2.048-.492l-3.18-3.696-1.368 1.656c-.188.228-.472.36-.776.36h-.004c-.312 0-.596-.144-.784-.384l-1.872-2.4c-.312-.4-.244-.972.152-1.284.396-.312.968-.244 1.28.152l1.368 1.752 3.024-3.672c.312-.38.888-.444 1.268-.132.38.312.444.888.132 1.268l-3.18 3.696 2.604 3.024c.312.36.852.42 1.236.132.384-.288.444-.828.132-1.212l-3.18-3.696z"/>
+         class="tg-button mt-6 inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl text-sm font-medium border border-gray-700 w-56 mx-auto">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.896 16.312c-.164.468-.508.84-.972 1.016-.684.26-1.604.062-2.048-.492l-3.18-3.696-1.368 1.656c-.188.228-.472.36-.776.36h-.004c-.312 0-.596-.144-.784-.384l-1.872-2.4c-.312-.4-.244-.972.152-1.284.396-.312.968-.244 1.28.152l1.368 1.752 3.024-3.672c.312-.38.888-.444 1.268-.132.38.312.444.888.132 1.268l-3.18 3.696 2.604 3.024c.312.36.852.42 1.236.132.384-.288.444-.828.132-1.212z"/>
         </svg>
         Telegram
       </a>
     </div>
-  </header>
+  </div>
 
   <!-- Треки сразу под кнопкой -->
-  <section class="px-4 pb-24">
+  <div class="px-4 pb-20">
     <div id="tracks-container" 
-         class="flex gap-4 overflow-x-auto horizontal-scroll snap-x snap-mandatory pb-6 px-2 -mx-2">
-      <!-- генерируются JS -->
+         class="flex gap-4 overflow-x-auto horizontal-scroll snap-x snap-mandatory pb-5 px-1">
+      <!-- JS заполнит -->
     </div>
 
-    <!-- Маленькая надпись снизу как у Verturi -->
-    <div class="text-center mt-6 footer-note">
-      native code • performance • clean architecture
+    <!-- Маленький текст снизу, как у Verturi -->
+    <div class="text-center tiny-footer mt-4">
+      native • performance • clean code
     </div>
-  </section>
+  </div>
 
-  <!-- Плеер снизу -->
-  <div id="player" class="bottom-player fixed bottom-0 left-0 right-0 h-20 hidden flex items-center px-4 z-50 border-t border-gray-800">
-    <div class="flex items-center w-full max-w-3xl mx-auto gap-3.5">
-      <img id="player-cover" src="" class="w-12 h-12 rounded-lg object-cover flex-shrink-0">
+  <!-- Плеер -->
+  <div id="player" class="bottom-player fixed bottom-0 left-0 right-0 h-16 hidden flex items-center px-3 z-50 border-t border-gray-800">
+    <div class="flex items-center w-full max-w-3xl mx-auto gap-3">
+      <img id="player-cover" src="" class="w-10 h-10 rounded-md object-cover flex-shrink-0">
       
       <div class="flex-1 min-w-0">
-        <p id="player-title" class="font-medium text-sm truncate">...</p>
-        <p id="player-artist" class="text-gray-400 text-xs">Propavshiy • <span id="track-duration">--:--</span></p>
+        <p id="player-title" class="text-sm font-medium truncate">...</p>
+        <p id="player-artist" class="text-xs text-gray-500">Propavshiy • <span id="track-duration">--:--</span></p>
       </div>
 
-      <div class="flex items-center gap-4">
-        <button onclick="prevTrack()" class="text-gray-400 hover:text-white">
+      <div class="flex items-center gap-3">
+        <button onclick="prevTrack()" class="text-gray-500 hover:text-gray-200">
           <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
         </button>
-        
-        <button onclick="togglePlay()" class="w-10 h-10 bg-cyan-700 hover:bg-cyan-600 rounded-lg flex items-center justify-center text-white">
+        <button onclick="togglePlay()" class="w-9 h-9 bg-cyan-800 hover:bg-cyan-700 rounded-md flex items-center justify-center text-white">
           <svg id="play-icon" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132z"/>
           </svg>
         </button>
-        
-        <button onclick="nextTrack()" class="text-gray-400 hover:text-white">
+        <button onclick="nextTrack()" class="text-gray-500 hover:text-gray-200">
           <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
         </button>
       </div>
 
       <div class="flex-1 max-w-xs hidden sm:block">
-        <input id="progress" type="range" min="0" max="100" value="0" class="w-full accent-cyan-600 cursor-pointer h-1">
+        <input id="progress" type="range" min="0" max="100" value="0" class="w-full accent-cyan-700 h-1 cursor-pointer">
       </div>
     </div>
   </div>
@@ -161,14 +170,14 @@
       container.innerHTML = '';
       tracks.forEach((track, i) => {
         const card = document.createElement('div');
-        card.className = 'track-card flex-shrink-0 w-56 snap-center bg-gray-900/60 rounded-xl overflow-hidden cursor-pointer border border-gray-800';
+        card.className = 'track-card flex-shrink-0 w-52 sm:w-56 snap-center bg-gray-900/50 rounded-xl overflow-hidden cursor-pointer border border-gray-800/70';
         card.innerHTML = `
           <div class="relative">
-            <img src="${track.cover}" class="w-full aspect-square object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-            <div class="absolute bottom-2.5 left-2.5 right-2.5">
-              <p class="text-base font-semibold">${track.title}</p>
-              <p class="text-gray-400 text-xs">${track.artist}</p>
+            <img src="${track.cover}" class="w-full aspect-square object-cover opacity-95">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+            <div class="absolute bottom-2 left-2.5 right-2.5">
+              <p class="text-sm font-medium">${track.title}</p>
+              <p class="text-xs text-gray-400">${track.artist}</p>
             </div>
           </div>
         `;
@@ -191,7 +200,7 @@
 
     function playTrack(index) {
       loadTrack(index);
-      audio.play().catch(()=>{});
+      audio.play().catch(e => console.log("Play blocked", e));
       isPlaying = true;
       document.getElementById('play-icon').innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
     }
@@ -201,10 +210,29 @@
         audio.pause();
         document.getElementById('play-icon').innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132z"/>';
       } else {
-        audio.play().catch(()=>{});
+        audio.play().catch(e => console.log("Play blocked", e));
         document.getElementById('play-icon').innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
       }
       isPlaying = !isPlaying;
     }
 
-    function
+    function nextTrack() { playTrack((currentIndex + 1) % tracks.length); }
+    function prevTrack() { playTrack((currentIndex - 1 + tracks.length) % tracks.length); }
+
+    const progress = document.getElementById('progress');
+    audio.ontimeupdate = () => {
+      if (audio.duration) progress.value = (audio.currentTime / audio.duration) * 100;
+    };
+    audio.onloadedmetadata = () => {
+      durationEl.textContent = formatTime(audio.duration);
+    };
+    progress.oninput = () => {
+      if (audio.duration) audio.currentTime = (progress.value / 100) * audio.duration;
+    };
+    audio.onended = nextTrack;
+
+    // Запуск рендера треков
+    renderTracks();
+  </script>
+</body>
+</html>
