@@ -10,45 +10,33 @@
     
     body {
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      font-size: 0.875rem;          /* основной текст ~14px */
+      font-size: 0.875rem;
       line-height: 1.4;
       color: #d1d5db;
     }
     
-    h1 {
-      font-size: 2.5rem;            /* имя меньше */
-      font-weight: 700;
-      letter-spacing: -0.025em;
-    }
+    h1 { font-size: 2.375rem; font-weight: 700; letter-spacing: -0.025em; }
+    h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.75rem; }
     
-    h2 {
-      font-size: 1.625rem;          /* заголовки секций */
-      font-weight: 600;
-    }
+    .section { max-width: 640px; margin-left: auto; margin-right: auto; padding: 1rem 1.25rem; }
     
     .pill {
-      font-size: 0.75rem;
-      padding: 0.375rem 0.75rem;
-      transition: all 0.2s ease;
+      font-size: 0.6875rem;
+      padding: 0.25rem 0.625rem;
+      background: #111827;
+      border: 1px solid #374151;
+      border-radius: 9999px;
+      transition: all 0.18s ease;
     }
-    .pill:hover {
-      transform: scale(1.04);
-      box-shadow: 0 0 8px rgba(6, 182, 212, 0.3);
-    }
+    .pill:hover { transform: scale(1.04); box-shadow: 0 0 8px rgba(6,182,212,0.25); }
     
     .track-card {
       transition: all 0.22s ease;
     }
-    .track-card:hover {
-      transform: translateY(-4px);
-    }
+    .track-card:hover { transform: translateY(-4px); }
     
-    .horizontal-scroll {
-      scrollbar-width: none;
-    }
-    .horizontal-scroll::-webkit-scrollbar {
-      display: none;
-    }
+    .horizontal-scroll { scrollbar-width: none; }
+    .horizontal-scroll::-webkit-scrollbar { display: none; }
     
     .tg-button {
       background: #1f2937;
@@ -60,13 +48,8 @@
       box-shadow: 0 6px 16px rgba(0,0,0,0.5);
     }
     
-    .bottom-player {
-      background: linear-gradient(to top, #000, #111827);
-      box-shadow: 0 -4px 16px -2px rgba(0,0,0,0.8);
-    }
-    
     .tiny-footer {
-      font-size: 0.6875rem;         /* ~11px, как мелкий текст у Verturi */
+      font-size: 0.6875rem;
       color: #6b7280;
       letter-spacing: 0.4px;
     }
@@ -74,7 +57,7 @@
 </head>
 <body class="bg-black min-h-screen overflow-x-hidden">
 
-  <!-- Верх: аватар + имя + кнопка -->
+  <!-- Аватар + имя + кнопка Telegram -->
   <div class="pt-10 pb-6 text-center">
     <div class="max-w-md mx-auto px-5">
       <img src="https://files.catbox.moe/yonydu.jpg" 
@@ -84,7 +67,6 @@
       <h1 class="mt-4">Propavshiy</h1>
       <p class="mt-1 text-sm text-cyan-600 font-medium">Android • C++</p>
 
-      <!-- Telegram кнопка -->
       <a href="https://t.me/Propavshiy_Wexon" target="_blank"
          class="tg-button mt-6 inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl text-sm font-medium border border-gray-700 w-56 mx-auto">
         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -95,20 +77,56 @@
     </div>
   </div>
 
-  <!-- Треки сразу под кнопкой -->
-  <div class="px-4 pb-20">
+  <!-- Треки сразу под кнопкой Telegram -->
+  <div class="px-4 pb-8">
     <div id="tracks-container" 
          class="flex gap-4 overflow-x-auto horizontal-scroll snap-x snap-mandatory pb-5 px-1">
-      <!-- JS заполнит -->
-    </div>
-
-    <!-- Маленький текст снизу, как у Verturi -->
-    <div class="text-center tiny-footer mt-4">
-      native • performance • clean code
+      <!-- JS заполнит карточки треков -->
     </div>
   </div>
 
-  <!-- Плеер -->
+  <!-- О СЕБЕ (ниже треков) -->
+  <div class="section py-4">
+    <h2>О СЕБЕ</h2>
+    <p class="text-gray-400">
+      Разработчик Android и C++ с фокусом на производительность и качество.  
+      Работаю с нативным кодом, оптимизацией и чистой архитектурой.
+    </p>
+  </div>
+
+  <!-- ТЕХНОЛОГИИ -->
+  <div class="section py-4">
+    <h2>ТЕХНОЛОГИИ</h2>
+    <div class="flex flex-wrap gap-2 mt-2">
+      <span class="pill">ANDROID</span>
+      <span class="pill">KOTLIN</span>
+      <span class="pill">C++</span>
+      <span class="pill">NDK</span>
+      <span class="pill">JAVA</span>
+      <span class="pill">WEBDEV</span>
+      <span class="pill">ARCHITECTURE</span>
+    </div>
+  </div>
+
+  <!-- ЧТО СОЗДАЮ -->
+  <div class="section py-4 pb-12">
+    <h2>ЧТО СОЗДАЮ</h2>
+    <div class="space-y-1.5 mt-2 text-gray-400">
+      <p>• Меню софтов для PUBG Mobile</p>
+      <p>• Веб-проекты (фронтенд + бэкенд)</p>
+      <p>• Native код и низкоуровневые оптимизации</p>
+      <p>• Кастомные клиенты и инструменты</p>
+      <p>• Производительные модули для мобильных приложений</p>
+      <p>• Решения под конкретные задачи (по запросу)</p>
+    </div>
+  </div>
+
+  <!-- Маленькая подпись внизу -->
+  <div class="text-center tiny-footer pb-20">
+    native • performance • clean code
+  </div>
+
+  <!-- Плеер снизу -->
   <div id="player" class="bottom-player fixed bottom-0 left-0 right-0 h-16 hidden flex items-center px-3 z-50 border-t border-gray-800">
     <div class="flex items-center w-full max-w-3xl mx-auto gap-3">
       <img id="player-cover" src="" class="w-10 h-10 rounded-md object-cover flex-shrink-0">
@@ -200,7 +218,7 @@
 
     function playTrack(index) {
       loadTrack(index);
-      audio.play().catch(e => console.log("Play blocked", e));
+      audio.play().catch(() => {});
       isPlaying = true;
       document.getElementById('play-icon').innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
     }
@@ -210,7 +228,7 @@
         audio.pause();
         document.getElementById('play-icon').innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132z"/>';
       } else {
-        audio.play().catch(e => console.log("Play blocked", e));
+        audio.play().catch(() => {});
         document.getElementById('play-icon').innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
       }
       isPlaying = !isPlaying;
