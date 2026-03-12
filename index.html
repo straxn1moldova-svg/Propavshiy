@@ -13,19 +13,19 @@
     }
     
     .pill {
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s ease;
     }
     .pill:hover {
       transform: scale(1.05);
-      box-shadow: 0 0 15px rgba(34, 211, 238, 0.5);
+      box-shadow: 0 0 12px rgba(34, 211, 238, 0.4);
     }
     
     .track-card {
-      transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+      transition: all 0.25s ease;
     }
     .track-card:hover {
-      transform: translateY(-8px) scale(1.03);
-      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.3);
+      transform: translateY(-6px);
+      box-shadow: 0 15px 20px -5px rgba(0,0,0,0.4);
     }
     
     .horizontal-scroll {
@@ -35,129 +35,112 @@
       display: none;
     }
     
+    .tg-button {
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .tg-button:hover {
+      transform: scale(1.08) translateY(-2px);
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.5);
+      background-color: #1d4ed8;
+    }
+    
     .bottom-player {
-      background: linear-gradient(180deg, #111111, #000000);
-      box-shadow: 0 -10px 30px -10px rgba(0, 0, 0, 0.8);
+      background: linear-gradient(180deg, #0f172a, #000000);
+      box-shadow: 0 -8px 25px -5px rgba(0,0,0,0.7);
     }
   </style>
 </head>
-<body class="bg-black text-gray-200 min-h-screen overflow-x-hidden">
+<body class="bg-black text-gray-300 min-h-screen overflow-x-hidden">
 
-  <!-- HERO -->
-  <header class="pt-12 pb-8 text-center border-b border-gray-900">
+  <!-- HERO + кнопка Telegram -->
+  <header class="pt-16 pb-10 text-center">
     <div class="max-w-md mx-auto px-6">
-      <img id="avatar" 
-           src="https://files.catbox.moe/yonydu.jpg" 
-           class="w-40 h-40 mx-auto rounded-3xl border-4 border-gray-800 shadow-2xl object-cover"
+      <img src="https://files.catbox.moe/yonydu.jpg" 
+           class="w-32 h-32 mx-auto rounded-2xl border-4 border-gray-800 shadow-2xl object-cover"
            alt="wexon.">
       
-      <h1 class="text-6xl font-bold mt-8 tracking-tighter">wexon.</h1>
-      <p class="text-3xl mt-2 text-cyan-400 font-medium">Developer</p>
-      <p class="text-2xl text-gray-400">ANDROID & C++</p>
-    </div>
+      <h1 class="text-5xl font-bold mt-6 tracking-tight">wexon.</h1>
+      <p class="text-xl mt-1 text-cyan-400 font-medium">Android • C++ • Music</p>
 
-    <div class="flex justify-center mt-10">
-      <a href="https://t.me/Propavshiy_Wexon" 
-         target="_blank"
-         class="inline-flex items-center gap-3 bg-gray-900 hover:bg-gray-800 transition px-12 py-5 rounded-3xl text-xl font-medium border border-cyan-500/30">
-        📱 Telegram @Propavshiy_Wexon
+      <!-- Кнопка Telegram под аватаркой -->
+      <a href="https://t.me/Propavshiy_Wexon" target="_blank"
+         class="tg-button inline-flex items-center gap-3 mt-8 px-10 py-4 bg-blue-600 text-white font-medium rounded-2xl text-lg shadow-lg hover:shadow-xl">
+        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.896 16.312c-.164.468-.508.84-.972 1.016-.684.26-1.604.062-2.048-.492l-3.18-3.696-1.368 1.656c-.188.228-.472.36-.776.36h-.004c-.312 0-.596-.144-.784-.384l-1.872-2.4c-.312-.4-.244-.972.152-1.284.396-.312.968-.244 1.28.152l1.368 1.752 3.024-3.672c.312-.38.888-.444 1.268-.132.38.312.444.888.132 1.268l-3.18 3.696 2.604 3.024c.312.36.852.42 1.236.132.384-.288.444-.828.132-1.212l-3.18-3.696 3.18 3.696z"/>
+        </svg>
+        Telegram
       </a>
     </div>
   </header>
 
-  <!-- О СЕБЕ -->
-  <section class="max-w-3xl mx-auto px-6 py-16">
-    <h2 class="text-5xl font-bold mb-8">О СЕБЕ</h2>
-    <div class="prose prose-invert text-lg leading-relaxed">
-      <p class="text-gray-300">
-        Разработчик Android и C++ с фокусом на производительность и качество. 
-        Создаю собственные клиенты и веб-проекты, работаю с нативным кодом и оптимизацией.
-      </p>
-      <p class="text-gray-300 mt-6">
-        Ценю производительность, чистую архитектуру и полный контроль над системой. 
-        Не останавливаюсь на поверхности. Пишу треки — слушай ниже.
-      </p>
+  <!-- О себе (меньше текст) -->
+  <section class="max-w-3xl mx-auto px-6 py-10">
+    <h2 class="text-3xl font-bold mb-5">О себе</h2>
+    <p class="text-base leading-relaxed opacity-90">
+      Разработчик Android и C++ с упором на скорость и качество кода.  
+      Пишу нативные клиенты, оптимизирую производительность, делаю музыку.
+    </p>
+  </section>
+
+  <!-- Технологии (компактнее) -->
+  <section class="max-w-3xl mx-auto px-6 py-8">
+    <h2 class="text-3xl font-bold mb-5">Технологии</h2>
+    <div class="flex flex-wrap gap-2.5">
+      <span class="pill px-4 py-1.5 bg-gray-900 text-cyan-300 border border-cyan-700/40 rounded-xl text-sm">Android</span>
+      <span class="pill px-4 py-1.5 bg-gray-900 text-cyan-300 border border-cyan-700/40 rounded-xl text-sm">Kotlin</span>
+      <span class="pill px-4 py-1.5 bg-gray-900 text-cyan-300 border border-cyan-700/40 rounded-xl text-sm">C++</span>
+      <span class="pill px-4 py-1.5 bg-gray-900 text-cyan-300 border border-cyan-700/40 rounded-xl text-sm">NDK</span>
+      <span class="pill px-4 py-1.5 bg-gray-900 text-cyan-300 border border-cyan-700/40 rounded-xl text-sm">Java</span>
+      <span class="pill px-4 py-1.5 bg-gray-900 text-cyan-300 border border-cyan-700/40 rounded-xl text-sm">Music</span>
     </div>
   </section>
 
-  <!-- ТЕХНОЛОГИИ -->
-  <section class="max-w-3xl mx-auto px-6 pb-16">
-    <h2 class="text-5xl font-bold mb-8">ТЕХНОЛОГИИ</h2>
-    <div class="flex flex-wrap gap-3">
-      <span class="pill px-6 py-3 bg-gray-900 text-cyan-400 border border-cyan-500 rounded-3xl text-sm font-medium">ANDROID</span>
-      <span class="pill px-6 py-3 bg-gray-900 text-cyan-400 border border-cyan-500 rounded-3xl text-sm font-medium">KOTLIN</span>
-      <span class="pill px-6 py-3 bg-gray-900 text-cyan-400 border border-cyan-500 rounded-3xl text-sm font-medium">C++</span>
-      <span class="pill px-6 py-3 bg-gray-900 text-cyan-400 border border-cyan-500 rounded-3xl text-sm font-medium">JAVA</span>
-      <span class="pill px-6 py-3 bg-gray-900 text-cyan-400 border border-cyan-500 rounded-3xl text-sm font-medium">NDK</span>
-      <span class="pill px-6 py-3 bg-gray-900 text-cyan-400 border border-cyan-500 rounded-3xl text-sm font-medium">WEBDEV</span>
-      <span class="pill px-6 py-3 bg-gray-900 text-cyan-400 border border-cyan-500 rounded-3xl text-sm font-medium">ARCHITECTURE</span>
-      <span class="pill px-6 py-3 bg-gray-900 text-cyan-400 border border-cyan-500 rounded-3xl text-sm font-medium">MUSIC</span>
+  <!-- Что создаю (твоя новая версия) -->
+  <section class="max-w-3xl mx-auto px-6 py-10">
+    <h2 class="text-3xl font-bold mb-5">Что создаю</h2>
+    <div class="space-y-4 text-base opacity-90">
+      <p><span class="text-cyan-400 font-medium">Android-приложения</span> — чистый код, MVVM, высокая производительность</p>
+      <p><span class="text-cyan-400 font-medium">Нативные модули на C++</span> — там, где нужна максимальная скорость</p>
+      <p><span class="text-cyan-400 font-medium">Меню для софта</span> — кастомные интерфейсы, продажа готовых решений</p>
+      <p><span class="text-cyan-400 font-medium">Музыку</span> — пишу и выпускаю треки, которые качают</p>
     </div>
   </section>
 
-  <!-- ЧТО СОЗДАЮ -->
-  <section class="max-w-3xl mx-auto px-6 pb-20">
-    <h2 class="text-5xl font-bold mb-8">ЧТО СОЗДАЮ</h2>
-    <div class="space-y-10 text-lg">
-      <div>
-        <p class="text-cyan-400 font-semibold">Android приложения</p>
-        <p class="text-gray-300">с использованием Kotlin, MVVM и Clean Architecture. Оптимизация — не опция.</p>
-      </div>
-      <div>
-        <p class="text-cyan-400 font-semibold">Native код на C++</p>
-        <p class="text-gray-300">для критичных частей. JNI, многопоточность, низкоуровневые оптимизации.</p>
-      </div>
-      <div>
-        <p class="text-cyan-400 font-semibold">Треки</p>
-        <p class="text-gray-300">мои собственные — листай и слушай прямо здесь.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- МОИ ТРЕКИ -->
-  <section class="px-6 pb-32 bg-gradient-to-b from-transparent via-gray-950 to-black">
-    <h2 class="text-5xl font-bold mb-8 text-center">МОИ ТРЕКИ</h2>
-    
+  <!-- Плейлист (без заголовка, сразу карточки) -->
+  <section class="px-6 pb-32">
     <div id="tracks-container" 
-         class="flex gap-6 overflow-x-auto horizontal-scroll snap-x snap-mandatory pb-8">
-      <!-- Карточки генерируются JS -->
+         class="flex gap-5 overflow-x-auto horizontal-scroll snap-x snap-mandatory pb-6 -mx-2 px-2">
+      <!-- карточки генерируются JS -->
     </div>
   </section>
 
-  <!-- BOTTOM PLAYER -->
-  <div id="player" class="bottom-player fixed bottom-0 left-0 right-0 h-24 hidden flex items-center px-4 z-50 border-t border-gray-800">
+  <!-- Плеер снизу -->
+  <div id="player" class="bottom-player fixed bottom-0 left-0 right-0 h-20 hidden flex items-center px-4 z-50 border-t border-gray-800">
     <div class="flex items-center w-full max-w-3xl mx-auto gap-4">
-      <img id="player-cover" 
-           src="" 
-           class="w-16 h-16 rounded-xl object-cover flex-shrink-0">
+      <img id="player-cover" src="" class="w-14 h-14 rounded-lg object-cover flex-shrink-0">
       
       <div class="flex-1 min-w-0">
         <p id="player-title" class="font-medium text-base truncate">...</p>
         <p id="player-artist" class="text-gray-400 text-sm">wexon. • <span id="track-duration">--:--</span></p>
       </div>
 
-      <div class="flex items-center gap-6">
-        <button onclick="prevTrack()" class="text-gray-400 hover:text-white transition">
-          <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      <div class="flex items-center gap-5">
+        <button onclick="prevTrack()" class="text-gray-400 hover:text-white">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        
+        <button onclick="togglePlay()" class="w-12 h-12 bg-cyan-600 hover:bg-cyan-500 rounded-xl flex items-center justify-center text-white">
+          <svg id="play-icon" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132z"/>
           </svg>
         </button>
         
-        <button id="play-pause-btn" onclick="togglePlay()" 
-                class="w-14 h-14 bg-cyan-500 hover:bg-cyan-400 transition rounded-2xl flex items-center justify-center text-black">
-          <svg id="play-icon" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132z" />
-          </svg>
-        </button>
-        
-        <button onclick="nextTrack()" class="text-gray-400 hover:text-white transition">
-          <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
+        <button onclick="nextTrack()" class="text-gray-400 hover:text-white">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
         </button>
       </div>
 
-      <div class="flex-1 max-w-xs">
+      <div class="flex-1 max-w-xs hidden sm:block">
         <input id="progress" type="range" min="0" max="100" value="0" class="w-full accent-cyan-500 cursor-pointer">
       </div>
     </div>
@@ -166,56 +149,15 @@
   <audio id="audio" preload="metadata"></audio>
 
   <script>
-    
     const tracks = [
-      {
-        title: "Миражи",  
-        artist: "wexon.",
-        cover: "https://files.catbox.moe/lqqz2a.jpg",
-        audio: "https://files.catbox.moe/gkicn1.mp3"
-      },
-      {
-        title: "Алготрип",
-        artist: "wexon.",
-        cover: "https://files.catbox.moe/lx8y0e.jpg",
-        audio: "https://files.catbox.moe/6hrc02.mp3"
-      },
-      {
-        title: "Скучаю",
-        artist: "wexon.",
-        cover: "https://files.catbox.moe/5ppugw.jpg",
-        audio: "https://files.catbox.moe/grb3mq.mp3"
-      },
-      {
-        title: "Ты это знала",
-        artist: "wexon.",
-        cover: "https://files.catbox.moe/262vto.jpg",
-        audio: "https://files.catbox.moe/hqv1pk.mp3"
-      },
-      {
-        title: "Раны",
-        artist: "wexon.",
-        cover: "https://files.catbox.moe/wuqkfr.jpg",
-        audio: "https://files.catbox.moe/rln061.mp3"
-      },
-      {
-        title: "Одиноко",
-        artist: "wexon.",
-        cover: "https://files.catbox.moe/wl9oof.jpg",
-        audio: "https://files.catbox.moe/xlh67f.mp3"
-      },
-      {
-        title: "кровати",
-        artist: "wexon.",
-        cover: "https://files.catbox.moe/49bzxd.jpg",
-        audio: "https://files.catbox.moe/noulzy.mp3"
-      },
-      {
-        title: "Апология - Исчезаю",
-        artist: "wexon.",
-        cover: "https://files.catbox.moe/cpq8mh.jpg",
-        audio: "https://files.catbox.moe/71gfm1.mp3"
-      }
+      { title: "Миражы",        artist: "wexon.", cover: "https://files.catbox.moe/lqqz2a.jpg", audio: "https://files.catbox.moe/gkicn1.mp3" },
+      { title: "Алготрип",      artist: "wexon.", cover: "https://files.catbox.moe/lx8y0e.jpg", audio: "https://files.catbox.moe/6hrc02.mp3" },
+      { title: "Скучаю",        artist: "wexon.", cover: "https://files.catbox.moe/5ppugw.jpg", audio: "https://files.catbox.moe/grb3mq.mp3" },
+      { title: "Ты это знала",  artist: "wexon.", cover: "https://files.catbox.moe/262vto.jpg", audio: "https://files.catbox.moe/hqv1pk.mp3" },
+      { title: "Раны",          artist: "wexon.", cover: "https://files.catbox.moe/wuqkfr.jpg", audio: "https://files.catbox.moe/rln061.mp3" },
+      { title: "Одиноко",       artist: "wexon.", cover: "https://files.catbox.moe/wl9oof.jpg", audio: "https://files.catbox.moe/xlh67f.mp3" },
+      { title: "кровати",       artist: "wexon.", cover: "https://files.catbox.moe/49bzxd.jpg", audio: "https://files.catbox.moe/noulzy.mp3" },
+      { title: "Апология - Исчезаю", artist: "wexon.", cover: "https://files.catbox.moe/cpq8mh.jpg", audio: "https://files.catbox.moe/71gfm1.mp3" }
     ];
 
     let currentIndex = 0;
@@ -224,106 +166,79 @@
     const player = document.getElementById('player');
     const durationEl = document.getElementById('track-duration');
 
-    function formatTime(seconds) {
-      if (!seconds || isNaN(seconds)) return "--:--";
-      const mins = Math.floor(seconds / 60);
-      const secs = Math.floor(seconds % 60);
-      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    function formatTime(sec) {
+      if (!sec || isNaN(sec)) return "--:--";
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s.toString().padStart(2,'0')}`;
     }
 
     function renderTracks() {
       const container = document.getElementById('tracks-container');
       container.innerHTML = '';
-
-      tracks.forEach((track, index) => {
+      tracks.forEach((track, i) => {
         const card = document.createElement('div');
-        card.className = `track-card flex-shrink-0 w-64 snap-center bg-gray-900 rounded-3xl overflow-hidden cursor-pointer border border-gray-800`;
+        card.className = 'track-card flex-shrink-0 w-60 sm:w-64 snap-center bg-gray-900/70 rounded-2xl overflow-hidden cursor-pointer border border-gray-800';
         card.innerHTML = `
           <div class="relative">
             <img src="${track.cover}" class="w-full aspect-square object-cover">
-            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/70"></div>
-            <div class="absolute bottom-4 left-4 right-4">
-              <p class="text-xl font-semibold">${track.title}</p>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+            <div class="absolute bottom-3 left-3 right-3">
+              <p class="text-lg font-semibold">${track.title}</p>
               <p class="text-gray-400 text-sm">${track.artist}</p>
             </div>
           </div>
         `;
-        card.onclick = () => playTrack(index);
+        card.onclick = () => playTrack(i);
         container.appendChild(card);
       });
     }
 
     function loadTrack(index) {
       currentIndex = index;
-      const track = tracks[index];
-      
-      audio.src = track.audio;
-      document.getElementById('player-cover').src = track.cover;
-      document.getElementById('player-title').textContent = track.title;
-      document.getElementById('player-artist').textContent = track.artist;
-      durationEl.textContent = "--:--"; // reset
-      
+      const t = tracks[index];
+      audio.src = t.audio;
+      document.getElementById('player-cover').src = t.cover;
+      document.getElementById('player-title').textContent = t.title;
+      document.getElementById('player-artist').firstChild.textContent = t.artist + ' • ';
+      durationEl.textContent = "--:--";
       player.classList.remove('hidden');
       audio.load();
     }
 
     function playTrack(index) {
       loadTrack(index);
-      audio.play().catch(e => console.log("Автовоспроизведение заблокировано:", e));
+      audio.play().catch(()=>{});
       isPlaying = true;
-      updatePlayButton();
+      document.getElementById('play-icon').innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
     }
 
     function togglePlay() {
       if (isPlaying) {
         audio.pause();
+        document.getElementById('play-icon').innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132z"/>';
       } else {
-        audio.play().catch(e => console.log("Play заблокировано:", e));
+        audio.play().catch(()=>{});
+        document.getElementById('play-icon').innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
       }
       isPlaying = !isPlaying;
-      updatePlayButton();
     }
 
-    function updatePlayButton() {
-      const icon = document.getElementById('play-icon');
-      if (isPlaying) {
-        icon.innerHTML = `<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>`;
-      } else {
-        icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132z" />`;
-      }
-    }
-
-    function nextTrack() {
-      let next = (currentIndex + 1) % tracks.length;
-      playTrack(next);
-    }
-
-    function prevTrack() {
-      let prev = (currentIndex - 1 + tracks.length) % tracks.length;
-      playTrack(prev);
-    }
+    function nextTrack() { playTrack((currentIndex + 1) % tracks.length); }
+    function prevTrack() { playTrack((currentIndex - 1 + tracks.length) % tracks.length); }
 
     const progress = document.getElementById('progress');
-
     audio.ontimeupdate = () => {
-      if (audio.duration) {
-        progress.value = (audio.currentTime / audio.duration) * 100;
-      }
+      if (audio.duration) progress.value = (audio.currentTime / audio.duration) * 100;
     };
-
     audio.onloadedmetadata = () => {
       durationEl.textContent = formatTime(audio.duration);
     };
-
     progress.oninput = () => {
-      if (audio.duration) {
-        audio.currentTime = (progress.value / 100) * audio.duration;
-      }
+      if (audio.duration) audio.currentTime = (progress.value / 100) * audio.duration;
     };
+    audio.onended = nextTrack;
 
-    audio.onended = () => nextTrack();
-
-    // Запуск
     renderTracks();
   </script>
 </body>
