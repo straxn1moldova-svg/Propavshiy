@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Propavshiy — Android & C++</title>
+  <title>DELEVOPER— Android & C++</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -13,22 +13,33 @@
       font-size: 0.875rem;
       line-height: 1.4;
       color: #d1d5db;
+      padding-bottom: 120px; /* чтобы контент не лез под плеер */
+      background: #000000;   /* основной фон чёрный */
     }
     
     h1 { font-size: 2.375rem; font-weight: 700; letter-spacing: -0.025em; }
-    h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.75rem; }
+    h2 { 
+      font-size: 1.5rem; 
+      font-weight: 600; 
+      margin-bottom: 0.75rem; 
+      color: #22d3ee;
+    }
     
     .section { max-width: 640px; margin-left: auto; margin-right: auto; padding: 1rem 1.25rem; }
     
     .pill {
       font-size: 0.6875rem;
       padding: 0.25rem 0.625rem;
-      background: #111827;
-      border: 1px solid #374151;
+      background: #0f172a;
+      border: 1px solid #06b6d4;
       border-radius: 9999px;
+      color: #22d3ee;
       transition: all 0.18s ease;
     }
-    .pill:hover { transform: scale(1.04); box-shadow: 0 0 8px rgba(6,182,212,0.25); }
+    .pill:hover { 
+      transform: scale(1.04); 
+      box-shadow: 0 0 12px rgba(34,211,238,0.4); 
+    }
     
     .track-card {
       transition: all 0.22s ease;
@@ -53,11 +64,26 @@
       color: #6b7280;
       letter-spacing: 0.4px;
     }
+
+    /* Фон под плеером — теперь сплошной чёрный, без прозрачности */
+    #player-bg {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100px;              /* чуть выше плеера */
+      background: #000000;        /* полностью чёрный */
+      z-index: 40;
+      pointer-events: none;
+    }
   </style>
 </head>
-<body class="bg-black min-h-screen overflow-x-hidden">
+<body class="min-h-screen overflow-x-hidden relative">
 
-  <!-- Аватар + имя + кнопка Telegram -->
+  <!-- Фон под плеер — сплошной чёрный -->
+  <div id="player-bg"></div>
+
+  <!-- Аватар + имя + кнопка -->
   <div class="pt-10 pb-6 text-center">
     <div class="max-w-md mx-auto px-5">
       <img src="https://files.catbox.moe/yonydu.jpg" 
@@ -77,15 +103,15 @@
     </div>
   </div>
 
-  <!-- Треки сразу под кнопкой Telegram -->
+  <!-- Треки сразу под кнопкой -->
   <div class="px-4 pb-8">
     <div id="tracks-container" 
          class="flex gap-4 overflow-x-auto horizontal-scroll snap-x snap-mandatory pb-5 px-1">
-      <!-- JS заполнит карточки треков -->
+      <!-- карточки треков -->
     </div>
   </div>
 
-  <!-- О СЕБЕ (ниже треков) -->
+  <!-- О СЕБЕ -->
   <div class="section py-4">
     <h2>О СЕБЕ</h2>
     <p class="text-gray-400">
@@ -121,13 +147,13 @@
     </div>
   </div>
 
-  <!-- Маленькая подпись внизу -->
+  <!-- Подпись снизу -->
   <div class="text-center tiny-footer pb-20">
     native • performance • clean code
   </div>
 
-  <!-- Плеер снизу -->
-  <div id="player" class="bottom-player fixed bottom-0 left-0 right-0 h-16 hidden flex items-center px-3 z-50 border-t border-gray-800">
+  <!-- Плеер -->
+  <div id="player" class="fixed bottom-0 left-0 right-0 h-16 hidden flex items-center px-3 z-50 border-t border-gray-800">
     <div class="flex items-center w-full max-w-3xl mx-auto gap-3">
       <img id="player-cover" src="" class="w-10 h-10 rounded-md object-cover flex-shrink-0">
       
@@ -160,7 +186,7 @@
 
   <script>
     const tracks = [
-      { title: "Миражы",        artist: "Propavshiy", cover: "https://files.catbox.moe/lqqz2a.jpg", audio: "https://files.catbox.moe/gkicn1.mp3" },
+      { title: "Миражи",        artist: "Propavshiy", cover: "https://files.catbox.moe/lqqz2a.jpg", audio: "https://files.catbox.moe/gkicn1.mp3" },
       { title: "Алготрип",      artist: "Propavshiy", cover: "https://files.catbox.moe/lx8y0e.jpg", audio: "https://files.catbox.moe/6hrc02.mp3" },
       { title: "Скучаю",        artist: "Propavshiy", cover: "https://files.catbox.moe/5ppugw.jpg", audio: "https://files.catbox.moe/grb3mq.mp3" },
       { title: "Ты это знала",  artist: "Propavshiy", cover: "https://files.catbox.moe/262vto.jpg", audio: "https://files.catbox.moe/hqv1pk.mp3" },
@@ -249,7 +275,6 @@
     };
     audio.onended = nextTrack;
 
-    // Запуск рендера треков
     renderTracks();
   </script>
 </body>
