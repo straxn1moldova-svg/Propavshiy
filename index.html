@@ -7,7 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
     
     html { scroll-behavior: smooth; }
     body { 
@@ -17,178 +17,149 @@
       overflow-x: hidden;
     }
 
-    /* Рамки блоков в стиле Vertuti */
-    .v-card {
-      background: rgba(8, 17, 43, 0.4);
-      border: 1px solid rgba(30, 58, 138, 0.4);
-      backdrop-filter: blur(12px);
-      border-radius: 18px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Анимация неона */
+    @keyframes neon-glow {
+      0%, 100% { border-color: #004cff; box-shadow: 0 0 10px #004cff; }
+      50% { border-color: #3b82f6; box-shadow: 0 0 20px #3b82f6; }
     }
-    .v-card:hover {
-      border-color: #3b82f6;
-      box-shadow: 0 0 25px rgba(59, 130, 246, 0.15);
-    }
+    .avatar { width: 90px; height: 90px; border-radius: 50%; border: 2px solid #004cff; animation: neon-glow 3s infinite; object-fit: cover; }
 
-    /* Анимация аватара */
-    @keyframes neon-glow { 
-        0%, 100% { border-color: #004cff; box-shadow: 0 0 15px rgba(0, 76, 255, 0.5); } 
-        50% { border-color: #3b82f6; box-shadow: 0 0 25px rgba(59, 130, 246, 0.7); } 
-    }
-    .avatar { width: 95px; height: 95px; border-radius: 50%; border: 3px solid #004cff; animation: neon-glow 3s infinite; object-fit: cover; }
-
-    /* Плавное меню (3 точки) */
+    /* Плавное меню */
     #dropdown { 
-      display: none; position: absolute; top: 55px; right: 16px; 
-      background: #08112b; border: 1px solid #1e3a8a; border-radius: 12px; 
-      width: 180px; z-index: 1000; box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+      display: none; position: absolute; top: 50px; right: 16px; 
+      background: #08112b; border: 1px solid #111e3d; border-radius: 12px; 
+      width: 180px; z-index: 1000; box-shadow: 0 15px 40px rgba(0,0,0,0.8);
       transform-origin: top right;
     }
-    .menu-show { display: block !important; animation: v-slideIn 0.3s ease-out forwards; }
-    .menu-hide { display: block !important; animation: v-slideOut 0.25s ease-in forwards; pointer-events: none; }
-    
-    @keyframes v-slideIn { from { opacity: 0; transform: scale(0.9) translateY(-10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-    @keyframes v-slideOut { from { opacity: 1; transform: scale(1) translateY(0); } to { opacity: 0; transform: scale(0.9) translateY(-10px); } }
+    .menu-animate-in { display: block !important; animation: scaleIn 0.25s ease-out forwards; }
+    .menu-animate-out { display: block !important; animation: scaleOut 0.2s ease-in forwards; pointer-events: none; }
 
-    /* Плеер HUD */
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.9) translateY(-10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    @keyframes scaleOut { from { opacity: 1; transform: scale(1) translateY(0); } to { opacity: 0; transform: scale(0.9) translateY(-10px); } }
+
+    /* Кнопки и карточки */
+    .press-anim { transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .press-anim:active { transform: scale(0.92); }
+
+    .v-card { background: #050a18; border: 1px solid #111e3d; border-radius: 12px; transition: all 0.3s; }
+    .v-card:hover { border-color: #1e3a8a; background: #08112b; }
+
+    /* Плеер */
     #player { 
       position: fixed; bottom: 0; left: 0; right: 0; 
-      background: rgba(5, 10, 24, 0.98); 
-      backdrop-filter: blur(20px);
-      border-top: 1px solid rgba(59, 130, 246, 0.3); 
-      transform: translateY(100%); 
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); 
-      z-index: 100; padding-bottom: 35px; 
+      background: rgba(5, 10, 24, 0.95); backdrop-filter: blur(10px);
+      border-top: 1px solid #111e3d; transform: translateY(100%); 
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 100; padding-bottom: 25px; 
     }
     #player.active { transform: translateY(0); }
 
-    .press-anim { transition: transform 0.2s; cursor: pointer; }
-    .press-anim:active { transform: scale(0.94); }
-
-    /* Заголовки */
-    .section-title { font-size: 10px; font-weight: 800; letter-spacing: 0.25em; color: #334155; text-transform: uppercase; }
-
-    /* Горизонтальный скролл треков */
-    .horizontal-scroll { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    /* Скролл треков */
+    .horizontal-scroll { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; gap: 12px; }
     .horizontal-scroll::-webkit-scrollbar { display: none; }
-    .playlist-page { flex: 0 0 100%; scroll-snap-align: center; }
+    .track-item { flex: 0 0 140px; scroll-snap-align: start; }
+
+    /* Вращение иконок */
+    .rotate-icon { transition: transform 0.4s; }
+    .rotated { transform: rotate(90deg); }
   </style>
 </head>
-<body class="pb-44">
+<body class="pb-36">
 
-<div class="max-w-md mx-auto pt-8 px-6">
-  <div class="flex justify-between items-center text-[11px] text-gray-500 mb-10 font-mono relative">
-    <span class="tracking-widest font-bold">PROPAVSHIY.SPACE</span>
-    <div onclick="toggleMenu()" class="press-anim p-2 bg-blue-900/20 rounded-full border border-blue-900/40">
-        <i id="dots-icon" class="fa-solid fa-ellipsis-vertical text-blue-500 text-lg transition-transform duration-500"></i>
-    </div>
-    <div id="dropdown">
-      <div class="p-4 border-b border-blue-900/30 text-white text-xs hover:bg-blue-600/20 transition-all" onclick="scrollToId('home')">Home</div>
-      <div class="p-4 border-b border-blue-900/30 text-white text-xs hover:bg-blue-600/20 transition-all" onclick="scrollToId('track')">Track List</div>
-      <div class="p-4 text-white text-xs hover:bg-blue-600/20 transition-all" onclick="scrollToId('sell')">Sell Username</div>
+<div class="max-w-md mx-auto pt-8 px-5">
+  <div class="flex justify-between items-center text-[10px] text-gray-600 mb-8 font-mono relative">
+    <span class="font-bold tracking-widest uppercase">propavshiy.space</span>
+    <div class="relative">
+      <div class="cursor-pointer p-2 press-anim" onclick="toggleMenu()">
+        <i id="dots-icon" class="fa-solid fa-ellipsis-vertical text-blue-500 text-xl rotate-icon"></i>
+      </div>
+      <div id="dropdown">
+        <div class="p-4 border-b border-[#111e3d] text-white text-xs hover:bg-blue-900 transition-colors cursor-pointer" onclick="scrollToId('home')">
+          <i class="fa-solid fa-house mr-2"></i> Home (Главная)
+        </div>
+        <div class="p-4 border-b border-[#111e3d] text-white text-xs hover:bg-blue-900 transition-colors cursor-pointer" onclick="scrollToId('track')">
+          <i class="fa-solid fa-music mr-2"></i> Track (Музыка)
+        </div>
+        <div class="p-4 text-white text-xs hover:bg-blue-900 transition-colors cursor-pointer" onclick="scrollToId('sell')">
+          <i class="fa-solid fa-tag mr-2"></i> Sell Username
+        </div>
+      </div>
     </div>
   </div>
 
-  <div id="home" class="text-center mb-10">
-    <div class="relative w-max mx-auto mb-6">
+  <div id="home" class="text-center pt-2">
+    <div class="relative w-max mx-auto">
       <img src="https://files.catbox.moe/yonydu.jpg" class="avatar shadow-2xl">
-      <div class="absolute bottom-1 right-1 w-5 h-5 bg-blue-600 rounded-full border-4 border-[#02040a]"></div>
+      <div class="absolute bottom-1 right-1 w-4 h-4 bg-blue-600 rounded-full border-4 border-[#02040a] shadow-[0_0_10px_#004cff]"></div>
     </div>
-    <h1 class="text-4xl font-extrabold tracking-tighter text-white mb-1">Propavshiy</h1>
-    <p class="text-blue-500 text-sm font-bold uppercase tracking-widest">@Propavshiy_Wexon</p>
+    <h1 class="text-4xl font-extrabold mt-4 tracking-tighter text-white">Propavshiy</h1>
+    <p class="text-blue-500 text-sm mt-1 font-bold">@Propavshiy_Wexon</p>
   </div>
 
-  <div class="v-card p-6 mb-8">
-    <p class="section-title text-center mb-5">About Developer</p>
+  <div class="mt-10 border-t border-[#111e3d] pt-8">
     <div class="flex flex-wrap justify-center gap-2 mb-6">
-      <span class="bg-blue-900/30 text-blue-400 text-[10px] font-bold px-3 py-1 rounded-md border border-blue-800/50 press-anim">C++</span>
-      <span class="bg-blue-900/30 text-blue-400 text-[10px] font-bold px-3 py-1 rounded-md border border-blue-800/50 press-anim">Python</span>
-      <span class="bg-blue-900/30 text-blue-400 text-[10px] font-bold px-3 py-1 rounded-md border border-blue-800/50 press-anim">Java</span>
-      <span class="bg-blue-900/30 text-blue-400 text-[10px] font-bold px-3 py-1 rounded-md border border-blue-800/50 press-anim">ImGui</span>
-      <span class="bg-blue-900/30 text-blue-400 text-[10px] font-bold px-3 py-1 rounded-md border border-blue-800/50 press-anim">Android NDK</span>
+      <span class="text-[10px] bg-[#08112b] text-blue-400 px-3 py-1 rounded border border-[#1e3a8a] font-bold">C++</span>
+      <span class="text-[10px] bg-[#08112b] text-blue-400 px-3 py-1 rounded border border-[#1e3a8a] font-bold">Python</span>
+      <span class="text-[10px] bg-[#08112b] text-blue-400 px-3 py-1 rounded border border-[#1e3a8a] font-bold">Android NDK</span>
     </div>
-    <p class="text-[13px] text-gray-400 leading-relaxed text-center italic">
-      Game Software Developer specializing in Android NDK and reverse engineering. I build high-performance game modification clients with custom ImGui-based UI systems, memory injection, and protected code execution.
+    <p class="text-gray-400 text-xs leading-relaxed text-center px-4">
+      Game Software Developer specializing in Android NDK and reverse engineering. 
+      I build high-performance game modification clients with custom ImGui-based UI.
     </p>
   </div>
 
-  <div class="grid grid-cols-3 gap-3 mb-10">
-    <div class="v-card p-4 text-center press-anim">
-      <div class="text-2xl font-black text-white">3+</div>
-      <div class="text-[9px] text-gray-600 uppercase font-bold mt-1">Years</div>
+  <div id="track" class="mt-12 border-t border-[#111e3d] pt-8">
+    <div class="flex justify-between items-center mb-5">
+      <p class="text-[10px] tracking-[0.3em] text-gray-700 uppercase font-black">Track List</p>
+      <span class="text-blue-500 text-[10px] font-bold animate-pulse">Swipe <i class="fa-solid fa-arrow-right"></i></span>
     </div>
-    <div class="v-card p-4 text-center press-anim">
-      <div class="text-2xl font-black text-white">5+</div>
-      <div class="text-[9px] text-gray-600 uppercase font-bold mt-1">Projects</div>
-    </div>
-    <div class="v-card p-4 text-center press-anim border-blue-700/50">
-      <div class="text-2xl font-black text-blue-500">C++</div>
-      <div class="text-[9px] text-gray-600 uppercase font-bold mt-1">Main</div>
-    </div>
+    <div id="playlists-container" class="horizontal-scroll pb-4">
+      </div>
   </div>
 
-  <div id="track" class="v-card p-4 mb-10 flex items-center gap-4 cursor-pointer" onclick="togglePlay()">
-    <img id="np-cover" src="https://files.catbox.moe/vfxsnu.jpg" class="w-14 h-14 rounded-xl object-cover shadow-2xl">
-    <div class="flex-1 min-w-0">
-      <div id="np-title" class="font-bold text-sm text-white truncate">Ну какая ты</div>
-      <div class="text-xs text-gray-500 mt-1">Propavshiy</div>
-    </div>
-    <button class="press-anim w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white shadow-lg shadow-blue-600/30">
-      <i id="np-play-icon" class="fa-solid fa-play text-lg"></i>
-    </button>
-  </div>
-
-  <div class="mb-10">
-    <div class="flex justify-between items-center mb-5 px-1">
-      <p class="section-title">My Track List</p>
-      <div class="text-blue-500 text-[10px] font-bold flex items-center gap-2">
-        Swipe <i class="fa-solid fa-arrow-right-long animate-pulse"></i>
+  <div id="sell" class="mt-10 border-t border-[#111e3d] pt-8">
+    <p class="text-[10px] tracking-[0.3em] text-gray-700 mb-5 uppercase font-black">Sell Username</p>
+    <div class="grid gap-3">
+      <div class="v-card p-4 text-center press-anim">
+        <div class="text-blue-400 font-mono font-bold text-sm mb-1">@Error_466</div>
+        <div class="text-[10px] text-gray-600 uppercase tracking-tighter">Premium Username</div>
+      </div>
+      <div class="v-card p-4 text-center press-anim border-blue-900/50">
+        <div class="text-white font-mono font-bold text-sm mb-1">@OHA_M777KA</div>
+        <div class="text-[10px] text-blue-500 font-bold uppercase tracking-tighter">Top Tier</div>
+      </div>
+      <div class="v-card p-4 text-center press-anim">
+        <div class="text-gray-400 font-mono font-bold text-xs">@OHA_F9O • @OHA_M5F9O_CS • @OHA_M5G9O</div>
       </div>
     </div>
-    <div id="playlists-container" class="horizontal-scroll"></div>
-  </div>
-
-  <div id="sell" class="mb-10">
-    <p class="section-title text-center mb-6">Sell Username</p>
-    <div class="space-y-3 mb-8">
-      <div class="v-card p-5 text-center press-anim">
-        <div class="text-blue-400 font-mono font-bold text-base">@OHA_M5F9O_CS</div>
-      </div>
-      <div class="v-card p-5 text-center border-blue-600/40 press-anim">
-        <div class="text-white font-mono font-bold text-base">@OHA_M777KA77</div>
-      </div>
-      <div class="v-card p-5 text-center press-anim">
-        <div class="text-blue-200 font-mono font-bold text-base">@Error_466</div>
-      </div>
-    </div>
-    <a href="https://t.me/Propavshiy_Wexon" target="_blank" class="flex items-center justify-center gap-3 bg-blue-700 hover:bg-blue-600 text-white font-bold py-5 rounded-2xl text-[11px] press-anim uppercase tracking-widest shadow-xl shadow-blue-600/20 transition-all">
-        <i class="fa-brands fa-telegram text-xl"></i> СВЯЗАТЬСЯ В TELEGRAM
+    
+    <a href="https://t.me/Propavshiy_Wexon" target="_blank" class="mt-8 flex items-center justify-center gap-3 bg-blue-700 hover:bg-blue-600 text-white font-bold py-4 rounded-xl text-xs press-anim transition-all shadow-lg shadow-blue-900/20">
+      <i class="fa-brands fa-telegram text-lg"></i> СВЯЗАТЬСЯ В TELEGRAM
     </a>
   </div>
 
-  <div class="text-center text-[10px] text-gray-800 mt-12 pb-10 font-mono uppercase tracking-widest">Propavshiy &copy; 2026</div>
+  <div class="text-center text-[10px] text-gray-800 mt-16 pb-10 font-mono uppercase tracking-widest">Propavshiy &copy; 2026</div>
 </div>
 
 <div id="player">
-  <div class="max-w-md mx-auto px-6 py-5">
-    <div class="flex items-center gap-5">
-      <img id="player-cover" src="https://files.catbox.moe/vfxsnu.jpg" class="w-14 h-14 rounded-xl object-cover shadow-2xl transition-transform duration-500">
+  <div class="max-w-md mx-auto px-6 py-4">
+    <div class="flex items-center gap-4">
+      <img id="player-cover" src="" class="w-12 h-12 rounded-lg object-cover shadow-xl transition-transform duration-500" id="p-img">
       <div class="flex-1 min-w-0">
-        <div id="player-title" class="font-bold text-sm truncate text-white">Ну какая ты</div>
-        <div class="flex justify-between items-center mt-3">
-          <span id="p-current" class="text-[10px] text-gray-500 font-mono">0:00</span>
-          <span id="p-duration" class="text-[10px] text-gray-600 font-mono">0:00</span>
+        <div id="player-title" class="font-bold text-sm truncate text-white">Title</div>
+        <div class="flex justify-between items-center mt-2">
+          <span id="p-current" class="text-[10px] text-gray-600 font-mono">0:00</span>
+          <span id="p-duration" class="text-[10px] text-gray-700 font-mono">0:00</span>
         </div>
-        <div class="w-full h-1 bg-gray-800 mt-2 rounded-full overflow-hidden">
+        <div class="w-full h-1 bg-[#111e3d] mt-1.5 rounded-full overflow-hidden">
           <div id="p-progress" class="h-full bg-blue-600 w-0 transition-all duration-150"></div>
         </div>
       </div>
       <div class="flex items-center gap-4">
-        <button onclick="prevTrack()" class="press-anim text-gray-500 text-xl"><i class="fa-solid fa-backward-step"></i></button>
-        <button onclick="togglePlay()" class="press-anim w-12 h-12 bg-white text-black rounded-full flex items-center justify-center shadow-2xl">
+        <button onclick="prevTrack()" class="press-anim text-gray-500 text-xl hover:text-white"><i class="fa-solid fa-backward-step"></i></button>
+        <button onclick="togglePlay()" class="press-anim w-12 h-12 bg-white text-black rounded-full flex items-center justify-center shadow-lg">
           <i id="main-play-icon" class="fa-solid fa-play text-lg"></i>
         </button>
-        <button onclick="nextTrack()" class="press-anim text-gray-500 text-xl"><i class="fa-solid fa-forward-step"></i></button>
+        <button onclick="nextTrack()" class="press-anim text-gray-500 text-xl hover:text-white"><i class="fa-solid fa-forward-step"></i></button>
       </div>
     </div>
   </div>
@@ -220,87 +191,90 @@
   let isPlaying = false;
   const audio = document.getElementById('audio');
   const dropdown = document.getElementById('dropdown');
+  const dotsIcon = document.getElementById('dots-icon');
 
-  // Меню с плавным скрытием
-  function toggleMenu() { 
-    if (dropdown.classList.contains('menu-show')) {
-      dropdown.classList.remove('menu-show');
-      dropdown.classList.add('menu-hide');
-      document.getElementById('dots-icon').style.transform = "rotate(0deg)";
-      setTimeout(() => { dropdown.classList.remove('menu-hide'); }, 250);
+  function toggleMenu() {
+    if (dropdown.classList.contains('menu-animate-in')) {
+      dropdown.classList.remove('menu-animate-in');
+      dropdown.classList.add('menu-animate-out');
+      dotsIcon.classList.remove('rotated');
+      setTimeout(() => { dropdown.style.display = 'none'; dropdown.classList.remove('menu-animate-out'); }, 200);
     } else {
-      dropdown.classList.add('menu-show');
-      document.getElementById('dots-icon').style.transform = "rotate(90deg)";
+      dropdown.style.display = 'block';
+      dropdown.classList.add('menu-animate-in');
+      dotsIcon.classList.add('rotated');
     }
   }
 
-  function scrollToId(id) { 
-    document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); 
-    if (dropdown.classList.contains('menu-show')) toggleMenu();
+  function scrollToId(id) {
+    toggleMenu();
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
   }
 
-  // Отрисовка списка треков
-  function renderPlaylists() {
+  function renderTracks() {
     const container = document.getElementById('playlists-container');
-    for (let i = 0; i < allTracks.length; i += 4) {
-      const group = allTracks.slice(i, i + 4);
-      const page = document.createElement('div');
-      page.className = 'playlist-page pr-5';
-      page.innerHTML = `
-        <div class="grid grid-cols-2 gap-4">${group.map((t, idx) => `
-          <div onclick="playTrack(${i + idx})" class="v-card p-3 press-anim">
-            <img src="${t.cover}" class="w-full aspect-square object-cover rounded-xl shadow-lg mb-2">
-            <div class="font-bold text-[11px] truncate text-white text-center">${t.title}</div>
-          </div>`).join('')}</div>`;
-      container.appendChild(page);
-    }
+    container.innerHTML = allTracks.map((t, i) => `
+      <div onclick="playTrack(${i})" class="track-item v-card p-2 press-anim cursor-pointer">
+        <img src="${t.cover}" class="w-full aspect-square object-cover rounded-lg mb-2">
+        <div class="text-[10px] font-bold text-white truncate px-1">${t.title}</div>
+      </div>
+    `).join('');
   }
 
-  // Запуск
   function playTrack(i) {
     currentIndex = i;
     const t = allTracks[i];
     audio.src = t.audio;
-    document.getElementById('np-cover').src = t.cover;
     document.getElementById('player-cover').src = t.cover;
-    document.getElementById('np-title').textContent = t.title;
     document.getElementById('player-title').textContent = t.title;
     
-    audio.load();
-    audio.play().then(() => { 
-      isPlaying = true; 
-      updateIcons(); 
-      document.getElementById('player').classList.add('active');
-    }).catch(e => console.log("User interaction needed"));
+    // Анимация при смене трека
+    document.getElementById('player-cover').style.transform = "scale(0.8)";
+    setTimeout(() => document.getElementById('player-cover').style.transform = "scale(1)", 200);
+
+    audio.play();
+    isPlaying = true;
+    document.getElementById('player').classList.add('active');
+    updateIcons();
   }
 
   function togglePlay() {
     if (!audio.src) { playTrack(0); return; }
-    if (isPlaying) { audio.pause(); isPlaying = false; }
-    else { audio.play(); isPlaying = true; document.getElementById('player').classList.add('active'); }
+    if (isPlaying) audio.pause(); else audio.play();
+    isPlaying = !isPlaying;
     updateIcons();
   }
 
   function updateIcons() {
     const icon = isPlaying ? 'fa-pause' : 'fa-play';
-    document.getElementById('np-play-icon').className = `fa-solid ${icon}`;
-    document.getElementById('main-play-icon').className = `fa-solid ${icon}`;
+    document.getElementById('main-play-icon').className = `fa-solid ${icon} text-lg`;
+  }
+
+  function fmt(s) {
+    if(!s || isNaN(s)) return "0:00";
+    const m = Math.floor(s/60);
+    const sec = Math.floor(s%60);
+    return m + ":" + sec.toString().padStart(2, '0');
   }
 
   audio.ontimeupdate = () => {
-    if (audio.duration) {
-      document.getElementById('p-progress').style.width = (audio.currentTime / audio.duration) * 100 + '%';
-      document.getElementById('p-current').innerText = fmt(audio.currentTime);
-      document.getElementById('p-duration').innerText = fmt(audio.duration);
-    }
+    const p = (audio.currentTime / audio.duration) * 100;
+    document.getElementById('p-progress').style.width = p + '%';
+    document.getElementById('p-current').innerText = fmt(audio.currentTime);
+    document.getElementById('p-duration').innerText = fmt(audio.duration);
   };
 
-  function fmt(s) { if(!s || isNaN(s)) return "0:00"; const m = Math.floor(s/60); const sec = Math.floor(s%60); return `${m}:${sec < 10 ? '0' : ''}${sec}`; }
   function nextTrack() { playTrack((currentIndex + 1) % allTracks.length); }
   function prevTrack() { playTrack((currentIndex - 1 + allTracks.length) % allTracks.length); }
-  audio.onended = nextTrack;
 
-  window.onload = renderPlaylists;
+  window.onload = renderTracks;
+
+  // Клик вне меню закрывает его
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.relative') && dropdown.classList.contains('menu-animate-in')) {
+      toggleMenu();
+    }
+  });
 </script>
 </body>
 </html>
