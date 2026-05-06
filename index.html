@@ -12,129 +12,110 @@
     html { scroll-behavior: smooth; }
     body { 
       font-family: 'Inter', sans-serif; 
-      background-color: #03060e; 
+      background-color: #02040a; 
       color: #94a3b8; 
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Точные размеры текста как на скрине */
-    .v-label { font-size: 9px; font-weight: 800; letter-spacing: 0.15em; color: #334155; text-transform: uppercase; }
-    .v-username { font-size: 11px; font-weight: 600; color: #3b82f6; margin-top: -2px; }
-    .v-bio { font-size: 10.5px; line-height: 1.5; color: #64748b; }
+    .v-text-tiny { font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; font-weight: 800; color: #334155; }
+    .v-username { font-size: 13px; font-weight: 700; color: #3b82f6; margin-top: -2px; }
+    .v-description { font-size: 11px; line-height: 1.6; color: #64748b; }
 
-    /* Рамка и фон блоков */
     .v-card {
-      background: rgba(5, 10, 24, 0.4);
-      border: 1px solid rgba(30, 58, 138, 0.2);
-      border-radius: 12px;
+      background: rgba(8, 17, 43, 0.3);
+      border: 1px solid rgba(30, 58, 138, 0.25);
+      backdrop-filter: blur(12px);
+      border-radius: 14px;
     }
 
-    /* Анимация меню */
-    #dropdown { 
-      display: none; position: absolute; top: 40px; right: 0; 
-      background: #08112b; border: 1px solid #111e3d; border-radius: 8px; 
-      width: 150px; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    /* Аватарка */
+    .avatar-wrapper { position: relative; width: 100px; height: 100px; margin: 0 auto; }
+    .avatar-img {
+        width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+        border: 2px solid #004cff; box-shadow: 0 0 20px rgba(0, 76, 255, 0.5);
     }
-    .menu-active { display: block !important; animation: v-fade 0.2s ease-out forwards; }
-    @keyframes v-fade { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+    .online-dot {
+        position: absolute; bottom: 8px; right: 8px;
+        width: 14px; height: 14px; background-color: #004cff;
+        border-radius: 50%; border: 3px solid #02040a;
+    }
+
+    /* Свайп-система 4 плейлиста по 4 трека */
+    .swipe-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; gap: 0; }
+    .swipe-container::-webkit-scrollbar { display: none; }
+    .playlist-page { min-width: 100%; scroll-snap-align: start; padding: 0 5px; }
+    .tracks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    @keyframes bounce-x { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
+    .animate-swipe { animation: bounce-x 1.2s infinite ease-in-out; }
 
     /* Плеер */
     #player { 
       position: fixed; bottom: 0; left: 0; right: 0; 
-      background: #050a18; border-top: 1px solid #111e3d; 
-      transform: translateY(100%); transition: transform 0.4s ease; z-index: 100;
-      padding-bottom: 20px;
+      background: rgba(3, 7, 18, 0.98); border-top: 1px solid rgba(59, 130, 246, 0.2);
+      transform: translateY(100%); transition: transform 0.4s ease;
+      z-index: 100; padding-bottom: 25px;
     }
     #player.active { transform: translateY(0); }
 
-    /* Сетка 2x2 */
-    .swipe-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; gap: 10px; }
-    .swipe-container::-webkit-scrollbar { display: none; }
-    .swipe-page { min-width: 100%; scroll-snap-align: start; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-    .press-anim:active { transform: scale(0.97); transition: 0.1s; }
-    
-    .nav-text { font-size: 10px; color: #475569; letter-spacing: 0.05em; font-family: monospace; }
+    .press-anim:active { transform: scale(0.96); transition: 0.1s; }
   </style>
 </head>
-<body class="pb-32">
+<body class="pb-36">
 
 <div class="max-w-md mx-auto pt-6 px-6">
-  <div class="flex justify-between items-center mb-10 relative">
-    <span class="nav-text uppercase">propavshiy.space</span>
-    <div class="relative flex items-center gap-4">
-      <i class="fa-solid fa-chevron-down text-gray-700 text-[10px]"></i>
-      <div onclick="toggleMenu()" class="cursor-pointer p-1 press-anim">
-        <i class="fa-solid fa-ellipsis-vertical text-blue-600 text-lg"></i>
-      </div>
-      <div id="dropdown">
-        <div class="p-3 border-b border-white/5 text-white text-[10px]" onclick="goto('home')">HOME</div>
-        <div class="p-3 border-b border-white/5 text-white text-[10px]" onclick="goto('track')">TRACK</div>
-        <div class="p-3 text-white text-[10px]" onclick="window.open('https://t.me/Propavshiy_Wexon')">TELEGRAM</div>
-      </div>
-    </div>
+  <div class="flex justify-between items-center mb-8 font-mono text-[9px] text-gray-700 uppercase tracking-widest">
+    <span>PROPAVSHIY.SPACE</span>
+    <i class="fa-solid fa-ellipsis-vertical text-blue-500 text-xl cursor-pointer"></i>
   </div>
 
-  <div id="home" class="text-center mb-8">
-    <div class="relative w-20 h-20 mx-auto mb-4">
-        <img src="https://files.catbox.moe/yonydu.jpg" class="w-full h-full rounded-full border-2 border-blue-600 p-0.5 object-cover shadow-[0_0_15px_rgba(37,99,235,0.3)]">
-        <div class="absolute bottom-1 right-1 w-3 h-3 bg-blue-600 rounded-full border-2 border-[#03060e]"></div>
+  <div id="home" class="text-center mb-10">
+    <div class="avatar-wrapper mb-5">
+        <div class="online-dot"></div>
+        <img src="https://files.catbox.moe/yonydu.jpg" class="avatar-img">
     </div>
-    <h1 class="text-4xl font-bold text-white tracking-tighter mb-0">propavshiy</h1>
+    <h1 class="text-4xl font-extrabold text-white tracking-tighter uppercase mb-1">Propavshiy</h1>
     <p class="v-username">@Propavshiy_Wexon</p>
   </div>
 
-  <div class="mb-10">
-    <div class="border-t border-white/5 pt-6 text-center">
-        <p class="v-label mb-4">ABOUT</p>
-        <div class="flex flex-wrap justify-center gap-1.5 mb-5">
-            <span class="text-[9px] font-bold bg-[#08112b] text-blue-500 px-3 py-1 rounded border border-blue-900/30">C++</span>
-            <span class="text-[9px] font-bold bg-[#08112b] text-blue-500 px-3 py-1 rounded border border-blue-900/30">Python</span>
-            <span class="text-[9px] font-bold bg-[#08112b] text-blue-500 px-3 py-1 rounded border border-blue-900/30">Java</span>
-        </div>
-        <p class="v-bio px-4">
-            Game Software Developer specializing in Android NDK and reverse engineering. I build high-performance game modification clients with custom ImGui-based UI systems, memory injection, and protected code execution.
-        </p>
+  <div class="v-card p-6 mb-8 text-center">
+    <p class="v-text-tiny mb-4">About</p>
+    <div class="flex flex-wrap justify-center gap-1.5 mb-6">
+      <span class="text-[10px] font-bold bg-[#08112b] text-blue-400 px-3 py-1 rounded border border-blue-900/30">C++</span>
+      <span class="text-[10px] font-bold bg-[#08112b] text-blue-400 px-3 py-1 rounded border border-blue-900/30">Python</span>
+      <span class="text-[10px] font-bold bg-[#08112b] text-blue-400 px-3 py-1 rounded border border-blue-900/30">Java</span>
     </div>
+    <p class="v-description italic px-2">
+      Game Software Developer specializing in Android NDK and reverse engineering. I build high-performance game modification clients with custom ImGui UI systems.
+    </p>
   </div>
 
-  <div class="grid grid-cols-3 gap-2 mb-10">
-    <div class="v-card p-3 text-center">
-      <div class="text-lg font-bold text-white tracking-tighter">3+</div>
-      <div class="text-[7px] text-gray-600 uppercase font-extrabold tracking-widest">Years</div>
-    </div>
-    <div class="v-card p-3 text-center">
-      <div class="text-lg font-bold text-white tracking-tighter">5+</div>
-      <div class="text-[7px] text-gray-600 uppercase font-extrabold tracking-widest">Projects</div>
-    </div>
-    <div class="v-card p-3 text-center">
-      <div class="text-lg font-bold text-blue-500 tracking-tighter">C++</div>
-      <div class="text-[7px] text-gray-600 uppercase font-extrabold tracking-widest">Main</div>
-    </div>
-  </div>
-
-  <div class="mb-10">
-    <p class="v-label mb-3">NOW PLAYING</p>
-    <div onclick="togglePlay()" class="v-card p-3 flex items-center gap-3 cursor-pointer press-anim">
+  <div class="mb-8">
+    <p class="v-text-tiny mb-3">Now Playing</p>
+    <div onclick="togglePlay()" class="v-card p-3.5 flex items-center gap-3.5 cursor-pointer press-anim">
       <img id="np-cover" src="https://files.catbox.moe/vfxsnu.jpg" class="w-10 h-10 rounded-md object-cover">
       <div class="flex-1 min-w-0">
-        <div id="np-title" class="text-white text-[11px] font-bold truncate">Ну какая ты</div>
-        <div class="text-gray-600 text-[9px] uppercase tracking-wider">Propavshiy</div>
+        <div id="np-title" class="text-white text-[12px] font-bold truncate">Ну какая ты</div>
+        <div class="text-gray-500 text-[10px] uppercase tracking-wider">Propavshiy</div>
       </div>
-      <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs"><i id="np-icon" class="fa-solid fa-play"></i></div>
+      <div class="w-9 h-9 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs"><i id="np-icon" class="fa-solid fa-play"></i></div>
     </div>
   </div>
 
   <div id="track" class="mb-10">
-    <div class="flex justify-between items-center mb-4">
-      <p class="v-label">МОИ ПЛЕЙЛИСТЫ</p>
-      <div class="text-blue-500 text-[9px] font-bold flex items-center gap-1">СВАЙПАЙ <i class="fa-solid fa-arrow-right"></i></div>
+    <div class="flex justify-between items-center mb-4 px-1">
+      <p class="v-text-tiny">Мои плейлисты</p>
+      <div class="text-blue-500 text-[10px] font-bold flex items-center gap-1.5 uppercase">
+        Свайпай <i class="fa-solid fa-arrow-right animate-swipe"></i>
+      </div>
     </div>
-    <div id="swipe-box" class="swipe-container"></div>
+    
+    <div id="swipe-box" class="swipe-container pb-3">
+      </div>
   </div>
 
   <div class="mb-10">
-      <a href="https://t.me/Propavshiy_Wexon" target="_blank" class="w-full py-4 bg-blue-600 rounded-xl flex items-center justify-center gap-2 text-white font-bold text-[11px] uppercase tracking-widest press-anim shadow-lg shadow-blue-900/20">
+      <a href="https://t.me/Propavshiy_Wexon" target="_blank" class="w-full py-4 bg-blue-600 rounded-xl flex items-center justify-center gap-2 text-white font-bold text-[10px] uppercase tracking-widest press-anim shadow-lg shadow-blue-900/20">
           <i class="fa-brands fa-telegram text-base"></i> связаться в telegram
       </a>
   </div>
@@ -144,15 +125,19 @@
 
 <div id="player">
   <div class="max-w-md mx-auto px-6 py-4 flex items-center gap-4">
-    <img id="p-cover" src="" class="w-10 h-10 rounded-md object-cover">
+    <img id="p-cover" src="" class="w-11 h-11 rounded-lg object-cover">
     <div class="flex-1 min-w-0">
-      <div id="p-title" class="text-white font-bold text-[10px] truncate uppercase">Title</div>
-      <div class="w-full h-0.5 bg-gray-900 mt-2.5 rounded-full"><div id="p-bar" class="h-full bg-blue-600 w-0"></div></div>
+      <div id="p-title" class="text-white font-bold text-[11px] truncate uppercase">Title</div>
+      <div class="flex justify-between items-center mt-2.5">
+        <span id="p-current" class="text-[9px] text-gray-600 font-mono">0:00</span>
+        <div class="flex-1 h-0.5 bg-gray-800 rounded-full mx-2 relative">
+            <div id="p-bar" class="h-full bg-blue-600 w-0"></div>
+        </div>
+        <span id="p-duration" class="text-[9px] text-gray-700 font-mono">0:00</span>
+      </div>
     </div>
-    <div class="flex items-center gap-4">
-      <i onclick="prev()" class="fa-solid fa-backward-step text-gray-600 text-xs"></i>
-      <div onclick="togglePlay()" class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-black text-xs"><i id="p-icon" class="fa-solid fa-play"></i></div>
-      <i onclick="next()" class="fa-solid fa-forward-step text-gray-600 text-xs"></i>
+    <div onclick="togglePlay()" class="w-9 h-9 bg-white rounded-full flex items-center justify-center text-black press-anim cursor-pointer">
+      <i id="p-icon" class="fa-solid fa-play"></i>
     </div>
   </div>
 </div>
@@ -160,6 +145,7 @@
 <audio id="audio"></audio>
 
 <script>
+  // 16 треков для 4 плейлистов
   const tracks = [
     { title: "Ну какая ты", cover: "https://files.catbox.moe/vfxsnu.jpg", url: "https://files.catbox.moe/ze0xwj.m4a" },
     { title: "Бессильно", cover: "https://files.catbox.moe/xdmwkt.jpg", url: "https://files.catbox.moe/9ibdq9.mp3" },
@@ -168,7 +154,15 @@
     { title: "Never Allow", cover: "https://files.catbox.moe/rpsk7t.jpg", url: "https://files.catbox.moe/rkfip7.m4a" },
     { title: "Зима", cover: "https://files.catbox.moe/1e8qa7.jpg", url: "https://files.catbox.moe/0w2yvl.m4a" },
     { title: "8 миля", cover: "https://files.catbox.moe/gggc5y.png", url: "https://files.catbox.moe/tcu8te.m4a" },
-    { title: "Наоборот", cover: "https://files.catbox.moe/yjbba7.png", url: "https://files.catbox.moe/awz24d.m4a" }
+    { title: "Наоборот", cover: "https://files.catbox.moe/yjbba7.png", url: "https://files.catbox.moe/awz24d.m4a" },
+    { title: "Устал", cover: "https://files.catbox.moe/qzb3c1.webp", url: "https://files.catbox.moe/7dozr5.mp3" },
+    { title: "Миражи", cover: "https://files.catbox.moe/lqqz2a.jpg", url: "https://files.catbox.moe/gkicn1.mp3" },
+    { title: "Алготрип", cover: "https://files.catbox.moe/lx8y0e.jpg", url: "https://files.catbox.moe/6hrc02.mp3" },
+    { title: "Скучаю", cover: "https://files.catbox.moe/5ppugw.jpg", url: "https://files.catbox.moe/grb3mq.mp3" },
+    { title: "Ты это знала", cover: "https://files.catbox.moe/262vto.jpg", url: "https://files.catbox.moe/hqv1pk.mp3" },
+    { title: "Раны", cover: "https://files.catbox.moe/wuqkfr.jpg", url: "https://files.catbox.moe/rln061.mp3" },
+    { title: "Одиноко", cover: "https://files.catbox.moe/wl9oof.jpg", url: "https://files.catbox.moe/xlh67f.mp3" },
+    { title: "кровати", cover: "https://files.catbox.moe/49bzxd.jpg", url: "https://files.catbox.moe/noulzy.mp3" }
   ];
 
   let cur = 0;
@@ -177,16 +171,31 @@
 
   function render() {
     const box = document.getElementById('swipe-box');
-    for (let i = 0; i < tracks.length; i += 4) {
+    // Разбиваем на 4 страницы
+    for (let p = 0; p < 4; p++) {
       const page = document.createElement('div');
-      page.className = 'swipe-page';
-      page.innerHTML = tracks.slice(i, i+4).map((t, idx) => `
-        <div onclick="play(${i + idx})" class="v-card p-2 press-anim cursor-pointer">
-          <img src="${t.cover}" class="w-full aspect-square object-cover rounded-lg mb-2">
-          <div class="text-[9px] font-bold text-white truncate text-center uppercase tracking-tighter">${t.title}</div>
+      page.className = 'playlist-page';
+      
+      const title = document.createElement('div');
+      title.className = 'text-[8px] text-gray-700 font-bold mb-3 uppercase tracking-widest text-center';
+      title.innerText = `Playlist ${p + 1}`;
+      page.appendChild(title);
+
+      const grid = document.createElement('div');
+      grid.className = 'tracks-grid';
+      
+      const start = p * 4;
+      const pageTracks = tracks.slice(start, start + 4);
+      
+      grid.innerHTML = pageTracks.map((t, i) => `
+        <div onclick="play(${start + i})" class="v-card p-2 press-anim cursor-pointer">
+          <img src="${t.cover}" class="w-full aspect-square object-cover rounded-xl mb-2 shadow-lg">
+          <div class="text-[9px] font-extrabold text-white truncate text-center uppercase tracking-tighter">${t.title}</div>
           <div class="text-[7px] text-gray-600 text-center uppercase mt-0.5">Propavshiy</div>
         </div>
       `).join('');
+      
+      page.appendChild(grid);
       box.appendChild(page);
     }
   }
@@ -218,21 +227,20 @@
     document.getElementById('p-icon').className = 'fa-solid ' + icon;
   }
 
+  function fmt(s) {
+    if(!s || isNaN(s)) return "0:00";
+    const m = Math.floor(s/60);
+    const sec = Math.floor(s%60);
+    return `${m}:${sec.toString().padStart(2, '0')}`;
+  }
+
   audio.ontimeupdate = () => {
-    document.getElementById('p-bar').style.width = (audio.currentTime / audio.duration) * 100 + '%';
+    if (audio.duration) {
+      document.getElementById('p-bar').style.width = (audio.currentTime / audio.duration) * 100 + '%';
+      document.getElementById('p-current').innerText = fmt(audio.currentTime);
+      document.getElementById('p-duration').innerText = fmt(audio.duration);
+    }
   };
-
-  function next() { play((cur + 1) % tracks.length); }
-  function prev() { play((cur - 1 + tracks.length) % tracks.length); }
-
-  function toggleMenu() {
-    document.getElementById('dropdown').classList.toggle('menu-active');
-  }
-
-  function goto(id) {
-    document.getElementById('dropdown').classList.remove('menu-active');
-    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-  }
 
   window.onload = render;
 </script>
