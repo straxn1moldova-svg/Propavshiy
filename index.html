@@ -3,57 +3,63 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Propavshiy</title>
+  <title>Propavshiy Portfolio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-    body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: #0a0a0a;
-      color: #d1d5db;
-      font-size: 0.875rem;
-      line-height: 1.35;
-    }
-    
+    body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #d1d5db; overflow-x: hidden; }
+
     /* Анимация неона для аватарки */
     @keyframes neon-glow {
       0% { border-color: #1e40af; box-shadow: 0 0 5px #1e40af; }
       50% { border-color: #22d3ee; box-shadow: 0 0 15px #22d3ee; }
       100% { border-color: #1e40af; box-shadow: 0 0 5px #1e40af; }
     }
+    .avatar { width: 110px; height: 110px; border: 3px solid #1e40af; animation: neon-glow 3s infinite ease-in-out; }
 
-    .avatar { 
-      width: 110px; height: 110px; 
-      border: 3px solid #1e40af; 
-      animation: neon-glow 3s infinite ease-in-out;
+    /* Анимация тегов (C++, Python...) */
+    .pill { 
+      font-size: 0.7rem; padding: 4px 12px; background: #1e2937; color: #67e8f9; 
+      border: 1px solid #334155; border-radius: 9999px; transition: all 0.3s ease;
+      cursor: pointer; user-select: none;
     }
-    
-    .pill { font-size: 0.7rem; padding: 3px 10px; background: #1e2937; color: #67e8f9; border: 1px solid #334155; border-radius: 9999px; }
-    .stat-card { background: #1e2937; border-radius: 10px; padding: 10px 8px; }
-    .track-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-    .track-card:hover { transform: scale(1.04); }
-    
-    .horizontal-scroll { scrollbar-width: none; scroll-behavior: smooth; }
-    .horizontal-scroll::-webkit-scrollbar { display: none; }
+    .pill:hover { background: #334155; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(103, 232, 249, 0.2); }
+    .pill:active { transform: scale(0.9); }
 
-    /* Окно плеера */
+    /* Анимация карточек статистики */
+    .stat-card { 
+      background: #1e2937; border-radius: 12px; padding: 12px; border: 1px solid #2d3748;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer;
+    }
+    .stat-card:active { transform: scale(0.95) rotate(-2deg); background: #2d3748; }
+
+    /* Плеер */
     #player {
-      transform: translateY(100%);
-      transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
-      height: auto;
-      padding-bottom: 25px;
-      background: #111827;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: rgba(17, 24, 39, 0.98); backdrop-filter: blur(10px);
+      border-top: 1px solid #334155; transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1); z-index: 100; padding-bottom: 25px;
     }
     #player.active { transform: translateY(0); }
+
+    /* Скролл индикатор */
+    .swipe-hint { animation: bounce-x 2s infinite; }
+    @keyframes bounce-x {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(5px); }
+    }
+
+    .horizontal-scroll { scrollbar-width: none; scroll-behavior: smooth; }
+    .horizontal-scroll::-webkit-scrollbar { display: none; }
   </style>
 </head>
-<body class="min-h-screen pb-36">
+<body class="pb-40">
 
 <div class="max-w-xl mx-auto pt-8 px-4">
   <div class="flex justify-center pt-4">
     <div class="avatar rounded-full overflow-hidden">
-      <img src="https://files.catbox.moe/yonydu.jpg" class="w-full h-full object-cover" alt="Propavshiy">
+      <img src="https://files.catbox.moe/yonydu.jpg" class="w-full h-full object-cover">
     </div>
   </div>
 
@@ -63,72 +69,89 @@
   </div>
 
   <div class="flex flex-wrap justify-center gap-2 mt-6">
-    <span class="pill">C++</span> <span class="pill">Python</span> <span class="pill">Java</span> <span class="pill">ImGui</span> <span class="pill">Android NDK</span>
+    <span class="pill">C++</span> <span class="pill">Python</span> 
+    <span class="pill">Java</span> <span class="pill">ImGui</span> 
+    <span class="pill">Android NDK</span>
   </div>
 
-  <div class="mt-7 px-2 text-[0.8rem] leading-relaxed text-gray-300">
+  <div class="mt-7 px-2 text-[0.8rem] leading-relaxed text-gray-300 text-center">
     Game Software Developer specializing in Android NDK and reverse engineering. 
-    I build high-performance game modification clients with custom ImGui-based UI systems.
+    I build high-performance game modification clients with custom ImGui-based UI.
   </div>
 
   <div class="grid grid-cols-3 gap-3 mt-8">
-    <div class="stat-card text-center"><div class="text-2xl font-bold">3+</div><div class="text-[10px] text-gray-400">YEARS THE COMMUNITY</div></div>
-    <div class="stat-card text-center"><div class="text-2xl font-bold">5+</div><div class="text-[10px] text-gray-400">PROJECTS</div></div>
-    <div class="stat-card text-center"><div class="text-2xl font-bold text-cyan-400">C++</div><div class="text-[10px] text-gray-400">MAIN LANG</div></div>
+    <div class="stat-card text-center"><div class="text-2xl font-bold">3+</div><div class="text-[9px] text-gray-400 uppercase">Years</div></div>
+    <div class="stat-card text-center"><div class="text-2xl font-bold">5+</div><div class="text-[9px] text-gray-400 uppercase">Projects</div></div>
+    <div class="stat-card text-center"><div class="text-2xl font-bold text-cyan-400">C++</div><div class="text-[9px] text-gray-400 uppercase">Main Lang</div></div>
   </div>
 
-  <div class="mt-8">
-    <div class="text-[10px] tracking-widest text-gray-500 mb-2 pl-1 uppercase">now playing</div>
-    <div id="now-playing" class="p-3 flex gap-3 items-center bg-[#1e2937] rounded-2xl border border-gray-700">
+  <div class="mt-10">
+    <p class="text-[10px] tracking-widest text-gray-500 mb-2 uppercase">now playing</p>
+    <div id="np-card" class="p-3 flex gap-3 items-center bg-[#1e2937] rounded-2xl border border-gray-700 shadow-xl">
       <img id="np-cover" src="https://files.catbox.moe/vfxsnu.jpg" class="w-14 h-14 rounded-xl object-cover">
       <div class="flex-1 min-w-0">
-        <div id="np-title" class="font-medium text-sm truncate text-white">Загрузка...</div>
+        <div id="np-title" class="font-medium text-sm truncate text-white">Ну какая ты</div>
         <div id="np-artist" class="text-xs text-gray-400">Propavshiy</div>
         <div class="mt-3 flex items-center gap-2 text-[10px]">
-          <span id="current-time-np" class="tabular-nums w-8">0:00</span>
+          <span id="np-current" class="tabular-nums">0:00</span>
           <div class="flex-1 h-1 bg-gray-700 rounded-full overflow-hidden">
-            <div id="progress-bar-np" class="h-full bg-cyan-400 w-0"></div>
+            <div id="np-progress" class="h-full bg-cyan-400 w-0 transition-all"></div>
           </div>
         </div>
       </div>
-      <button onclick="togglePlay()" class="w-9 h-9 bg-cyan-500 rounded-full flex items-center justify-center text-black">
-        <i id="play-icon-np" class="fa-solid fa-play"></i>
+      <button onclick="togglePlay()" class="w-10 h-10 bg-cyan-500 rounded-full flex items-center justify-center text-black">
+        <i id="np-play-icon" class="fa-solid fa-play"></i>
       </button>
     </div>
   </div>
 
   <div class="mt-10">
-    <div class="text-[10px] tracking-widest text-gray-500 mb-3 px-1 uppercase">мои плейлисты</div>
+    <div class="flex justify-between items-center mb-3 px-1">
+      <p class="text-[10px] tracking-widest text-gray-500 uppercase">мои плейлисты</p>
+      <div class="text-[10px] text-cyan-400 flex items-center gap-1 swipe-hint">
+        свайпай <i class="fa-solid fa-arrow-right-long"></i>
+      </div>
+    </div>
     <div id="playlists-container" class="flex gap-6 overflow-x-auto horizontal-scroll snap-x snap-mandatory pb-6"></div>
   </div>
 
-  <a href="https://t.me/Propavshiy_Wexon" target="_blank" class="mt-10 block bg-gradient-to-r from-blue-700 to-blue-500 text-white font-medium py-3.5 rounded-2xl text-center text-sm shadow-lg active:scale-95 transition">
+  <div class="mt-8 p-4 bg-[#111827] border border-gray-800 rounded-2xl">
+    <p class="text-[10px] text-gray-500 uppercase mb-3 text-center tracking-widest">Available for purchase</p>
+    <div class="space-y-2 text-center">
+      <div class="text-sm font-mono text-cyan-400 font-bold">Sell Username: @OHA_M5F9O_CS</div>
+      <div class="text-xs text-gray-400">@OHA_F9O • OHA_M5G9O</div>
+    </div>
+  </div>
+
+  <a href="https://t.me/Propavshiy_Wexon" target="_blank" class="mt-6 block bg-gradient-to-r from-blue-700 to-blue-500 text-white font-bold py-4 rounded-2xl text-center shadow-lg active:scale-95 transition-all">
     <i class="fa-brands fa-telegram"></i> связаться в telegram
   </a>
 
-  <div class="text-center text-[10px] text-gray-600 mt-8 pb-8">Propavshiy • 2025</div>
+  <div class="text-center text-[10px] text-gray-600 mt-8 pb-8 uppercase tracking-widest">Propavshiy • 2025</div>
 </div>
 
-<div id="player" class="fixed bottom-0 left-0 right-0 border-t border-gray-800 z-50 rounded-t-3xl">
-  <div class="max-w-xl mx-auto px-4 py-4">
-    <div class="flex items-center gap-3">
+<div id="player" class="fixed bottom-0 left-0 right-0 border-t border-gray-800 z-50 rounded-t-3xl shadow-2xl">
+  <div class="max-w-xl mx-auto px-6 py-4">
+    <div class="flex items-center gap-4">
       <img id="player-cover" src="" class="w-12 h-12 rounded-xl object-cover">
       <div class="flex-1 min-w-0">
-        <div id="player-title" class="font-medium text-sm truncate text-white">Title</div>
+        <div id="player-title" class="font-bold text-sm truncate text-white">Title</div>
         <div id="player-artist" class="text-xs text-gray-400">Artist</div>
       </div>
-      <div class="flex items-center gap-4 text-xl">
+      <div class="flex items-center gap-5 text-xl">
         <button onclick="prevTrack()" class="text-gray-400"><i class="fa-solid fa-backward-step"></i></button>
-        <button onclick="togglePlay()" class="w-10 h-10 bg-white text-black rounded-full flex items-center justify-center"><i id="main-play-icon" class="fa-solid fa-play"></i></button>
+        <button onclick="togglePlay()" class="w-11 h-11 bg-white text-black rounded-full flex items-center justify-center">
+          <i id="main-play-icon" class="fa-solid fa-play"></i>
+        </button>
         <button onclick="nextTrack()" class="text-gray-400"><i class="fa-solid fa-forward-step"></i></button>
       </div>
     </div>
-    <div class="mt-4 flex items-center gap-2 text-[10px]">
-      <span id="current-time" class="tabular-nums w-8">0:00</span>
+    <div class="mt-4 flex items-center gap-3 text-[10px]">
+      <span id="p-current" class="tabular-nums text-gray-400">0:00</span>
       <div class="flex-1 h-1 bg-gray-700 rounded-full relative cursor-pointer" onclick="seek(event)">
-        <div id="progress-bar" class="h-full bg-cyan-400 rounded-full w-0"></div>
+        <div id="p-progress" class="h-full bg-cyan-400 rounded-full w-0"></div>
       </div>
-      <span id="duration-time" class="tabular-nums text-gray-500 w-8 text-right">0:00</span>
+      <span id="p-duration" class="tabular-nums text-gray-500 text-right">0:00</span>
     </div>
   </div>
 </div>
@@ -159,11 +182,11 @@
   let isPlaying = false;
   const audio = document.getElementById('audio');
 
-  function formatTime(sec) {
-    if (!sec || isNaN(sec)) return "0:00";
-    const m = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60);
-    return m + ":" + (s < 10 ? '0' : '') + s;
+  function formatTime(s) {
+    if (!s || isNaN(s)) return "0:00";
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return m + ":" + (sec < 10 ? '0' : '') + sec;
   }
 
   function renderPlaylists() {
@@ -174,13 +197,14 @@
       const div = document.createElement('div');
       div.className = 'flex-shrink-0 w-full snap-center';
       div.innerHTML = `
+        <div class="text-[9px] text-gray-500 mb-2 uppercase ml-1">плейлист ${Math.floor(i/4)+1}</div>
         <div class="grid grid-cols-2 gap-3">
           ${group.map(t => `
-            <div onclick="playTrack(${allTracks.indexOf(t)})" class="track-card bg-gray-900 rounded-2xl overflow-hidden cursor-pointer border border-gray-800">
+            <div onclick="playTrack(${allTracks.indexOf(t)})" class="track-card bg-[#111827] rounded-2xl overflow-hidden border border-gray-800 active:scale-95 transition-all">
               <img src="${t.cover}" class="w-full aspect-square object-cover">
-              <div class="p-2.5">
-                <div class="font-medium text-sm truncate text-white">${t.title}</div>
-                <div class="text-[10px] text-gray-500">${t.artist}</div>
+              <div class="p-3">
+                <div class="font-bold text-xs truncate text-white">${t.title}</div>
+                <div class="text-[9px] text-gray-500">${t.artist}</div>
               </div>
             </div>
           `).join('')}
@@ -198,8 +222,8 @@
     document.getElementById('player-cover').src = t.cover;
     document.getElementById('np-title').textContent = t.title;
     document.getElementById('player-title').textContent = t.title;
-    document.getElementById('player-artist').textContent = t.artist;
     document.getElementById('np-artist').textContent = t.artist;
+    document.getElementById('player-artist').textContent = t.artist;
   }
 
   function playTrack(i) {
@@ -217,9 +241,9 @@
   }
 
   function updateIcons() {
-    const state = isPlaying ? 'fa-pause' : 'fa-play';
-    document.getElementById('play-icon-np').className = `fa-solid ${state}`;
-    document.getElementById('main-play-icon').className = `fa-solid ${state}`;
+    const icon = isPlaying ? 'fa-pause' : 'fa-play';
+    document.getElementById('np-play-icon').className = `fa-solid ${icon}`;
+    document.getElementById('main-play-icon').className = `fa-solid ${icon}`;
   }
 
   function seek(e) {
@@ -230,14 +254,11 @@
   audio.ontimeupdate = () => {
     const p = (audio.currentTime / audio.duration) * 100;
     const time = formatTime(audio.currentTime);
-    document.getElementById('progress-bar').style.width = p + '%';
-    document.getElementById('progress-bar-np').style.width = p + '%';
-    document.getElementById('current-time').textContent = time;
-    document.getElementById('current-time-np').textContent = time;
-  };
-
-  audio.onloadedmetadata = () => {
-    document.getElementById('duration-time').textContent = formatTime(audio.duration);
+    document.getElementById('np-progress').style.width = p + '%';
+    document.getElementById('p-progress').style.width = p + '%';
+    document.getElementById('np-current').innerText = time;
+    document.getElementById('p-current').innerText = time;
+    document.getElementById('p-duration').innerText = formatTime(audio.duration);
   };
 
   function nextTrack() { playTrack((currentIndex + 1) % allTracks.length); }
@@ -247,6 +268,7 @@
   window.onload = () => {
     renderPlaylists();
     loadTrack(0);
+    updateIcons();
   };
 </script>
 </body>
