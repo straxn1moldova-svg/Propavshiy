@@ -7,172 +7,186 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
     
     html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; background-color: #03060e; color: #94a3b8; overflow-x: hidden; }
+    body { 
+      font-family: 'Inter', sans-serif; 
+      background-color: #03060e; 
+      color: #94a3b8; 
+      overflow-x: hidden;
+    }
 
-    /* Неоновая аватарка */
+    /* Анимация аватарки */
     @keyframes neon-glow { 
         0%, 100% { border-color: #004cff; box-shadow: 0 0 10px #004cff; } 
         50% { border-color: #3b82f6; box-shadow: 0 0 20px #3b82f6; } 
     }
     .avatar { width: 90px; height: 90px; border-radius: 50%; border: 2px solid #004cff; animation: neon-glow 3s infinite; object-fit: cover; }
 
-    /* Анимации кнопок */
-    .btn-anim { transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-    .btn-anim:active { transform: scale(0.9) rotate(-2deg); }
-    
-    .stat-card { background: #050a18; border: 1px solid #111e3d; transition: all 0.3s; cursor: pointer; }
-    .stat-card:hover { border-color: #3b82f6; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(59, 130, 246, 0.1); }
-    .stat-card:active { transform: scale(0.95); }
+    /* Общая анимация нажатия */
+    .press-anim { transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; }
+    .press-anim:active { transform: scale(0.92); }
 
-    /* Анимация меню (3 точки) */
-    #dropdown { 
-        display: none; position: absolute; top: 50px; right: 16px; 
-        background: #08112b; border: 1px solid #111e3d; border-radius: 8px; 
-        width: 160px; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        transform-origin: top right;
+    /* Стиль тегов с анимацией */
+    .skill-pill { 
+      font-size: 10px; font-weight: 600; padding: 4px 12px; 
+      background: #08112b; color: #3b82f6; 
+      border: 1px solid #1e3a8a; border-radius: 6px;
+      transition: all 0.3s;
     }
-    .menu-open { display: block !important; animation: scaleIn 0.2s ease-out forwards; }
+    .skill-pill:hover { background: #1e3a8a; color: white; box-shadow: 0 0 10px rgba(59,130,246,0.3); }
+
+    /* Выпадающее меню */
+    #dropdown { 
+      display: none; position: absolute; top: 50px; right: 16px; 
+      background: #08112b; border: 1px solid #111e3d; border-radius: 10px; 
+      width: 170px; z-index: 1000; box-shadow: 0 15px 40px rgba(0,0,0,0.9);
+      transform-origin: top right;
+    }
+    .menu-open { display: block !important; animation: scaleIn 0.25s ease-out forwards; }
     @keyframes scaleIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+
+    /* Шрифты и тексты */
+    .about-text { font-size: 13px; line-height: 1.6; color: #94a3b8; font-weight: 400; text-align: center; }
+    .section-title { font-size: 10px; font-weight: 800; letter-spacing: 0.2em; color: #334155; text-transform: uppercase; }
+
+    /* Плеер */
+    #player { position: fixed; bottom: 0; left: 0; right: 0; background: #050a18; border-top: 1px solid #111e3d; transform: translateY(100%); transition: transform 0.4s; z-index: 100; padding-bottom: 25px; }
+    #player.active { transform: translateY(0); }
+    .horizontal-scroll { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .horizontal-scroll::-webkit-scrollbar { display: none; }
+    .playlist-page { flex: 0 0 100%; scroll-snap-align: center; }
 
     /* Анимация переключения трека */
     .track-bounce { animation: bounceEffect 0.4s ease; }
     @keyframes bounceEffect { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-
-    /* Свайп-подсказка */
-    @keyframes swipe-move { 0%, 100% { transform: translateX(0); opacity: 0.3; } 50% { transform: translateX(6px); opacity: 1; } }
-    .swipe-hint { animation: swipe-move 1.2s infinite ease-in-out; }
-
-    #player { position: fixed; bottom: 0; left: 0; right: 0; background: #050a18; border-top: 1px solid #111e3d; transform: translateY(100%); transition: transform 0.4s; z-index: 100; padding-bottom: 25px; }
-    #player.active { transform: translateY(0); }
-    
-    .horizontal-scroll { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
-    .horizontal-scroll::-webkit-scrollbar { display: none; }
-    .playlist-page { flex: 0 0 100%; scroll-snap-align: center; }
   </style>
 </head>
 <body class="pb-36">
 
-<div class="max-w-md mx-auto pt-6 px-4">
-  <div class="flex justify-between items-center text-xs text-gray-600 mb-6 font-mono relative">
-    <span>propavshiy.space</span>
-    <div onclick="toggleMenu()" class="btn-anim cursor-pointer p-1">
-        <i id="dots-icon" class="fa-solid fa-ellipsis-vertical text-blue-500 text-xl transition-transform duration-300"></i>
+<div class="max-w-md mx-auto pt-8 px-5">
+  <div class="flex justify-between items-center text-[11px] text-gray-600 mb-8 font-mono relative">
+    <span class="font-bold">propavshiy.space</span>
+    <div onclick="toggleMenu()" class="press-anim p-2">
+        <i id="dots-icon" class="fa-solid fa-ellipsis-vertical text-blue-500 text-xl transition-all duration-300"></i>
     </div>
     <div id="dropdown">
-      <div class="menu-item p-3 border-b border-[#111e3d] text-white text-xs hover:bg-blue-900" onclick="scrollToId('home')">Home</div>
-      <div class="menu-item p-3 border-b border-[#111e3d] text-white text-xs hover:bg-blue-900" onclick="scrollToId('track')">Track</div>
-      <div class="menu-item p-3 text-white text-xs hover:bg-blue-900" onclick="scrollToId('sell')">Marketplace</div>
+      <div class="p-4 border-b border-[#111e3d] text-white text-xs hover:bg-blue-900 transition-colors" onclick="scrollToId('home')">Home</div>
+      <div class="p-4 border-b border-[#111e3d] text-white text-xs hover:bg-blue-900 transition-colors" onclick="scrollToId('track')">Track</div>
+      <div class="p-4 text-white text-xs hover:bg-blue-900 transition-colors" onclick="scrollToId('sell')">Sell Username</div>
     </div>
   </div>
 
-  <div id="home" class="text-center pt-4">
+  <div id="home" class="text-center">
     <div class="relative w-max mx-auto">
-      <img src="https://files.catbox.moe/yonydu.jpg" class="avatar">
-      <div class="absolute bottom-1 right-1 w-3 h-3 bg-blue-600 rounded-full border-2 border-[#03060e] shadow-[0_0_10px_#004cff]"></div>
+      <img src="https://files.catbox.moe/yonydu.jpg" class="avatar shadow-2xl">
+      <div class="absolute bottom-1 right-1 w-4 h-4 bg-blue-600 rounded-full border-4 border-[#03060e] shadow-[0_0_15px_#004cff]"></div>
     </div>
-    <h1 class="text-4xl font-extrabold mt-3 tracking-tighter text-white font-mono">Propavshiy</h1>
-    <p class="text-blue-600 text-xs mt-1 font-medium">@Propavshiy_Wexon</p>
+    <h1 class="text-4xl font-extrabold mt-5 tracking-tight text-white">Propavshiy</h1>
+    <p class="text-blue-500 text-sm mt-1 font-semibold">@Propavshiy_Wexon</p>
   </div>
 
-  <div class="border-t border-[#111e3d] mt-8 pt-6">
-    <p class="text-[9px] uppercase tracking-[0.3em] text-gray-700 text-center mb-4">about developer</p>
-    <div class="flex flex-wrap justify-center gap-2 mb-6">
-      <span class="pill btn-anim text-[10px] bg-[#08112b] border border-blue-900 text-blue-400 px-3 py-1 rounded">C++</span>
-      <span class="pill btn-anim text-[10px] bg-[#08112b] border border-blue-900 text-blue-400 px-3 py-1 rounded">Android NDK</span>
-      <span class="pill btn-anim text-[10px] bg-[#08112b] border border-blue-900 text-blue-400 px-3 py-1 rounded">Reverse Engineering</span>
-      <span class="pill btn-anim text-[10px] bg-[#08112b] border border-blue-900 text-blue-400 px-3 py-1 rounded">ImGui</span>
+  <div class="mt-10 border-t border-[#111e3d] pt-8">
+    <p class="section-title text-center mb-5">About Developer</p>
+    
+    <div class="flex flex-wrap justify-center gap-2 mb-8">
+      <span class="skill-pill press-anim">C++</span>
+      <span class="skill-pill press-anim">Python</span>
+      <span class="skill-pill press-anim">Java</span>
+      <span class="skill-pill press-anim">ImGui</span>
+      <span class="skill-pill press-anim">Android NDK</span>
     </div>
-    <p class="text-gray-400 text-[11px] leading-relaxed text-center px-4 italic">
-        Game Software Developer specializing in Android NDK and reverse engineering. I build high-performance game modification clients with custom ImGui-based UI systems, memory injection, and protected code execution.
+
+    <p class="about-text px-2">
+      Game Software Developer specializing in Android NDK and reverse engineering. I build high-performance game modification clients with custom ImGui-based UI systems, memory injection, and protected code execution.
     </p>
   </div>
 
-  <div class="grid grid-cols-3 gap-3 mt-8">
-    <div class="stat-card p-4 rounded text-center btn-anim">
-      <div class="text-xl font-bold text-white">3+</div>
-      <div class="text-[8px] text-gray-600 uppercase tracking-widest mt-1">Years</div>
+  <div class="grid grid-cols-3 gap-3 mt-10">
+    <div class="press-anim bg-[#050a18] border border-[#111e3d] p-5 rounded-xl text-center shadow-lg">
+      <div class="text-2xl font-extrabold text-white">3+</div>
+      <div class="text-[9px] text-gray-600 uppercase font-bold mt-1">Years</div>
     </div>
-    <div class="stat-card p-4 rounded text-center btn-anim">
-      <div class="text-xl font-bold text-white">5+</div>
-      <div class="text-[8px] text-gray-600 uppercase tracking-widest mt-1">Projects</div>
+    <div class="press-anim bg-[#050a18] border border-[#111e3d] p-5 rounded-xl text-center shadow-lg">
+      <div class="text-2xl font-extrabold text-white">5+</div>
+      <div class="text-[9px] text-gray-600 uppercase font-bold mt-1">Projects</div>
     </div>
-    <div class="stat-card p-4 rounded text-center btn-anim">
-      <div class="text-xl font-bold text-blue-500">C++</div>
-      <div class="text-[8px] text-gray-600 uppercase tracking-widest mt-1">Main</div>
+    <div class="press-anim bg-[#050a18] border border-blue-900/40 p-5 rounded-xl text-center shadow-lg">
+      <div class="text-2xl font-extrabold text-blue-500">C++</div>
+      <div class="text-[9px] text-gray-600 uppercase font-bold mt-1">Main</div>
     </div>
   </div>
 
-  <div id="track" class="mt-10 border-t border-[#111e3d] pt-6">
-    <p class="text-[9px] tracking-[0.3em] text-gray-700 mb-3 uppercase">current status</p>
-    <div class="p-3 flex gap-4 items-center bg-[#050a18] rounded border border-[#111e3d]">
-      <img id="np-cover" src="https://files.catbox.moe/vfxsnu.jpg" class="w-12 h-12 rounded object-cover shadow-lg">
+  <div id="track" class="mt-12 border-t border-[#111e3d] pt-8">
+    <p class="section-title mb-4">Now Playing</p>
+    <div class="p-3 flex gap-4 items-center bg-[#050a18] rounded-2xl border border-[#111e3d] shadow-inner">
+      <img id="np-cover" src="https://files.catbox.moe/vfxsnu.jpg" class="w-14 h-14 rounded-xl object-cover shadow-2xl">
       <div class="flex-1 min-w-0">
-        <div id="np-title" class="font-bold text-xs truncate text-white">Ну какая ты</div>
-        <div class="text-[10px] text-gray-500">Propavshiy</div>
+        <div id="np-title" class="font-bold text-sm truncate text-white">Ну какая ты</div>
+        <div class="text-xs text-gray-500 mt-0.5">Propavshiy</div>
       </div>
-      <button onclick="togglePlay()" class="btn-anim w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white">
-        <i id="np-play-icon" class="fa-solid fa-play"></i>
+      <button onclick="togglePlay()" class="press-anim w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white shadow-lg shadow-blue-900/40">
+        <i id="np-play-icon" class="fa-solid fa-play text-lg"></i>
       </button>
     </div>
   </div>
 
-  <div class="mt-10">
-    <div class="flex justify-between items-end mb-4 px-1">
-      <p class="text-[9px] tracking-[0.3em] text-gray-700 uppercase">мои плейлисты</p>
-      <div class="text-blue-500 text-[10px] flex items-center gap-1.5 font-bold swipe-hint">
-        свайпай <i class="fa-solid fa-arrow-right-long"></i>
+  <div class="mt-10 mb-5">
+    <div class="flex justify-between items-center mb-5 px-1">
+      <p class="section-title">Playlists</p>
+      <div class="text-blue-500 text-[11px] font-bold flex items-center gap-2">
+        Swipe <i class="fa-solid fa-arrow-right-long animate-pulse"></i>
       </div>
     </div>
     <div id="playlists-container" class="horizontal-scroll"></div>
   </div>
 
-  <div id="sell" class="mt-10 border-t border-[#111e3d] pt-6 mb-10">
-    <p class="text-[9px] tracking-[0.3em] text-gray-700 mb-4 uppercase text-center">marketplace</p>
-    <div class="grid grid-cols-1 gap-3">
-      <div class="p-4 bg-[#050a18] border border-[#111e3d] rounded-lg text-center stat-card btn-anim">
-        <div class="text-blue-400 font-mono font-bold text-sm mb-1">@OHA_M5F9O_CS</div>
-        <div class="text-[9px] text-gray-600 uppercase">@OHA_F9O • @OHA_M5G9O</div>
+  <div id="sell" class="mt-10 border-t border-[#111e3d] pt-8">
+    <p class="section-title text-center mb-6">Sell Username</p>
+    <div class="space-y-3">
+      <div class="press-anim p-4 bg-[#050a18] border border-[#111e3d] rounded-xl text-center">
+        <div class="text-blue-400 font-mono font-bold text-base mb-1">@OHA_M5F9O_CS</div>
+        <div class="text-[10px] text-gray-600 uppercase font-semibold">@OHA_F9O • @OHA_M5G9O</div>
       </div>
-      <div class="p-4 bg-[#050a18] border border-blue-900/50 rounded-lg text-center stat-card btn-anim">
-        <div class="text-white font-mono font-bold text-sm mb-1">@OHA_M777KA77</div>
-        <div class="text-[9px] text-blue-500 uppercase font-bold tracking-widest">Premium Tag</div>
+      <div class="press-anim p-4 bg-[#050a18] border border-blue-900/50 rounded-xl text-center shadow-lg">
+        <div class="text-white font-mono font-bold text-base mb-1">@OHA_M777KA77</div>
+        <div class="text-[10px] text-blue-500 uppercase font-extrabold tracking-widest">Premium Username</div>
       </div>
-      <div class="p-4 bg-[#050a18] border border-[#111e3d] rounded-lg text-center stat-card btn-anim">
-        <div class="text-blue-300 font-mono font-bold text-sm mb-1">@Error_466</div>
-        <div class="text-[9px] text-gray-600 uppercase tracking-tighter">Available Tag</div>
+      <div class="press-anim p-4 bg-[#050a18] border border-[#111e3d] rounded-xl text-center">
+        <div class="text-blue-300 font-mono font-bold text-base mb-1">@Error_466</div>
+        <div class="text-[10px] text-gray-600 uppercase">Available Tag</div>
       </div>
     </div>
-    <a href="https://t.me/Propavshiy_Wexon" target="_blank" class="mt-6 block bg-blue-700 hover:bg-blue-600 text-white font-bold py-4 rounded-xl text-xs text-center btn-anim uppercase tracking-widest shadow-lg shadow-blue-900/20">
-        Связаться для покупки
+    
+    <a href="https://t.me/Propavshiy_Wexon" target="_blank" class="mt-8 flex items-center justify-center gap-3 bg-blue-700 hover:bg-blue-600 text-white font-bold py-5 rounded-2xl text-[11px] press-anim uppercase tracking-widest shadow-xl shadow-blue-900/30">
+        <i class="fa-brands fa-telegram text-xl"></i> СВЯЗАТЬСЯ В TELEGRAM
     </a>
   </div>
 
-  <div class="text-center text-[9px] text-gray-800 mt-10 pb-10 font-mono">Propavshiy • 2025</div>
+  <div class="text-center text-[10px] text-gray-800 mt-12 pb-10 font-mono uppercase tracking-widest">Propavshiy &copy; 2026</div>
 </div>
 
 <div id="player">
-  <div class="max-w-md mx-auto px-5 py-3">
-    <div class="flex items-center gap-4">
-      <img id="player-cover" src="" class="w-11 h-11 rounded-lg object-cover shadow-2xl transition-transform duration-300">
+  <div class="max-w-md mx-auto px-6 py-4">
+    <div class="flex items-center gap-5">
+      <img id="player-cover" src="" class="w-12 h-12 rounded-xl object-cover shadow-2xl">
       <div class="flex-1 min-w-0">
-        <div id="player-title" class="font-bold text-xs truncate text-white">Title</div>
+        <div id="player-title" class="font-bold text-sm truncate text-white">Title</div>
         <div class="flex justify-between items-center mt-2">
-          <span id="p-current" class="text-[9px] text-gray-600 tabular-nums">0:00</span>
-          <span id="p-duration" class="text-[9px] text-gray-700 tabular-nums">0:00</span>
+          <span id="p-current" class="text-[10px] text-gray-600 font-mono">0:00</span>
+          <span id="p-duration" class="text-[10px] text-gray-700 font-mono">0:00</span>
         </div>
-        <div class="w-full h-1 bg-[#111e3d] mt-1 rounded-full overflow-hidden">
+        <div class="w-full h-1 bg-[#111e3d] mt-1.5 rounded-full overflow-hidden">
           <div id="p-progress" class="h-full bg-blue-600 w-0 transition-all"></div>
         </div>
       </div>
-      <div class="flex items-center gap-3">
-        <button onclick="prevTrack()" class="btn-anim text-gray-500 text-lg hover:text-white p-1"><i class="fa-solid fa-backward-step"></i></button>
-        <button onclick="togglePlay()" class="btn-anim w-11 h-11 bg-white text-black rounded-full flex items-center justify-center shadow-lg">
-          <i id="main-play-icon" class="fa-solid fa-play"></i>
+      <div class="flex items-center gap-5">
+        <button onclick="prevTrack()" class="press-anim text-gray-500 text-xl hover:text-white"><i class="fa-solid fa-backward-step"></i></button>
+        <button onclick="togglePlay()" class="press-anim w-12 h-12 bg-white text-black rounded-full flex items-center justify-center shadow-xl">
+          <i id="main-play-icon" class="fa-solid fa-play text-lg"></i>
         </button>
-        <button onclick="nextTrack()" class="btn-anim text-gray-500 text-lg hover:text-white p-1"><i class="fa-solid fa-forward-step"></i></button>
+        <button onclick="nextTrack()" class="press-anim text-gray-500 text-xl hover:text-white"><i class="fa-solid fa-forward-step"></i></button>
       </div>
     </div>
   </div>
@@ -219,12 +233,12 @@
     for (let i = 0; i < allTracks.length; i += 4) {
       const group = allTracks.slice(i, i + 4);
       const page = document.createElement('div');
-      page.className = 'playlist-page pr-4';
-      page.innerHTML = `<div class="text-[8px] text-gray-700 uppercase mb-3 ml-1 font-bold">Плейлист ${Math.floor(i/4)+1}</div>
-        <div class="grid grid-cols-2 gap-3">${group.map((t, idx) => `
-          <div onclick="playTrack(${i + idx})" class="stat-card rounded-xl overflow-hidden p-2 btn-anim cursor-pointer border border-[#111e3d]">
-            <img src="${t.cover}" class="w-full aspect-square object-cover rounded-lg">
-            <div class="p-1 mt-2 text-center"><div class="font-bold text-[10px] truncate text-white">${t.title}</div></div>
+      page.className = 'playlist-page pr-5';
+      page.innerHTML = `<div class="text-[10px] text-gray-700 uppercase mb-4 ml-1 font-bold tracking-widest">Library Page ${Math.floor(i/4)+1}</div>
+        <div class="grid grid-cols-2 gap-4">${group.map((t, idx) => `
+          <div onclick="playTrack(${i + idx})" class="press-anim bg-[#050a18] rounded-2xl overflow-hidden p-2.5 border border-[#111e3d] shadow-lg">
+            <img src="${t.cover}" class="w-full aspect-square object-cover rounded-xl">
+            <div class="p-2 mt-1 text-center"><div class="font-bold text-[11px] truncate text-white">${t.title}</div></div>
           </div>`).join('')}</div>`;
       container.appendChild(page);
     }
@@ -239,7 +253,6 @@
     document.getElementById('np-title').textContent = t.title;
     document.getElementById('player-title').textContent = t.title;
     
-    // Анимация при переключении
     document.getElementById('player-cover').classList.add('track-bounce');
     setTimeout(() => document.getElementById('player-cover').classList.remove('track-bounce'), 400);
 
@@ -256,8 +269,8 @@
 
   function updateIcons() {
     const icon = isPlaying ? 'fa-pause' : 'fa-play';
-    document.getElementById('np-play-icon').className = `fa-solid ${icon}`;
-    document.getElementById('main-play-icon').className = `fa-solid ${icon}`;
+    document.getElementById('np-play-icon').className = `fa-solid ${icon} text-lg`;
+    document.getElementById('main-play-icon').className = `fa-solid ${icon} text-lg`;
   }
 
   function fmt(s) { if(!s || isNaN(s)) return "0:00"; const m = Math.floor(s/60); const sec = Math.floor(s%60); return `${m}:${sec < 10 ? '0' : ''}${sec}`; }
