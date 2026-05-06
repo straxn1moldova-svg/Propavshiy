@@ -10,45 +10,26 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     
     html { scroll-behavior: smooth; }
-    body { 
-      font-family: 'Inter', sans-serif; 
-      background-color: #03060e; 
-      color: #94a3b8; 
-      overflow-x: hidden; 
-    }
+    body { font-family: 'Inter', sans-serif; background-color: #03060e; color: #94a3b8; overflow-x: hidden; }
 
-    /* Синий неон */
     @keyframes neon-glow {
       0%, 100% { border-color: #004cff; box-shadow: 0 0 5px #004cff; }
       50% { border-color: #1a62ff; box-shadow: 0 0 15px #1a62ff; }
     }
-    .avatar { 
-      width: 90px; height: 90px; border-radius: 50%;
-      border: 2px solid #004cff; animation: neon-glow 3s infinite; object-fit: cover;
-    }
+    .avatar { width: 90px; height: 90px; border-radius: 50%; border: 2px solid #004cff; animation: neon-glow 3s infinite; object-fit: cover; }
 
-    /* === АНИМАЦИЯ СТРЕЛКИ СВАЙПА (ИСПРАВЛЕНО) === */
     @keyframes swipe-move {
-      0% { transform: translateX(0); opacity: 0.3; }
+      0%, 100% { transform: translateX(0); opacity: 0.3; }
       50% { transform: translateX(6px); opacity: 1; }
-      100% { transform: translateX(0); opacity: 0.3; }
     }
-    .swipe-hint { 
-      display: inline-block; /* Обязательно для анимации transform */
-      animation: swipe-move 1.2s infinite ease-in-out; 
-      color: #3b82f6; /* Синий цвет стрелки */
-      font-weight: bold;
-    }
+    .swipe-hint { display: inline-block; animation: swipe-move 1.2s infinite ease-in-out; }
 
-    /* Выпадающее меню */
     #dropdown {
       display: none; position: absolute; top: 50px; right: 16px;
       background: #08112b; border: 1px solid #111e3d; border-radius: 8px;
       width: 160px; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      animation: menuFade 0.2s ease-out;
     }
-    @keyframes menuFade { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-    .menu-item { padding: 12px 16px; font-size: 12px; color: white; cursor: pointer; border-bottom: 1px solid #111e3d; transition: background 0.2s; }
+    .menu-item { padding: 12px 16px; font-size: 12px; color: white; cursor: pointer; border-bottom: 1px solid #111e3d; }
     .menu-item:hover { background: #1e3a8a; }
 
     .pill { font-size: 0.65rem; padding: 3px 10px; background-color: #08112b; color: #3b82f6; border: 1px solid #1e3a8a; border-radius: 4px; }
@@ -60,11 +41,7 @@
     }
     #player.active { transform: translateY(0); }
     
-    /* Горизонтальный скролл с фиксацией */
-    .horizontal-scroll { 
-      display: flex; overflow-x: auto; scroll-snap-type: x mandatory; 
-      scrollbar-width: none; -ms-overflow-style: none;
-    }
+    .horizontal-scroll { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
     .horizontal-scroll::-webkit-scrollbar { display: none; }
     .playlist-page { flex: 0 0 100%; scroll-snap-align: center; }
   </style>
@@ -84,43 +61,35 @@
 
   <div id="home" class="text-center pt-4">
     <div class="relative w-max mx-auto">
-      <img src="https://files.catbox.moe/yonydu.jpg" class="avatar" alt="Propavshiy">
+      <img src="https://files.catbox.moe/yonydu.jpg" class="avatar">
       <div class="absolute bottom-1 right-1 w-3 h-3 bg-blue-600 rounded-full border-2 border-[#03060e] shadow-[0_0_8px_#004cff]"></div>
     </div>
     <h1 class="text-4xl font-extrabold mt-3 tracking-tighter text-white font-mono">Propavshiy</h1>
     <p class="text-blue-600 text-xs mt-1 font-medium">@Propavshiy_Wexon</p>
   </div>
 
-  <div class="flex flex-wrap justify-center gap-1.5 mt-6 mb-5">
-    <span class="pill">C++</span> <span class="pill">Python</span> 
-    <span class="pill">Java</span> <span class="pill">ImGui</span> <span class="pill">Android NDK</span>
-  </div>
-
-  <div class="grid grid-cols-3 gap-2 mt-6">
-    <div class="bg-[#050a18] border border-[#111e3d] p-3 text-center rounded">
-      <div class="text-lg font-bold text-white">3+</div>
-      <div class="text-[7px] text-gray-600 uppercase tracking-wider">Years</div>
-    </div>
-    <div class="bg-[#050a18] border border-[#111e3d] p-3 text-center rounded">
-      <div class="text-lg font-bold text-white">5+</div>
-      <div class="text-[7px] text-gray-600 uppercase tracking-wider">Projects</div>
-    </div>
-    <div class="bg-[#050a18] border border-[#111e3d] p-3 text-center rounded">
-      <div class="text-lg font-bold text-blue-500">C++</div>
-      <div class="text-[7px] text-gray-600 uppercase tracking-wider">Main</div>
+  <div id="track" class="mt-8 border-t border-[#111e3d] pt-6">
+    <p class="text-[9px] tracking-[0.3em] text-gray-700 mb-3 uppercase">now playing</p>
+    <div class="p-2 flex gap-3 items-center bg-[#050a18] rounded border border-[#111e3d]">
+      <img id="np-cover" src="https://files.catbox.moe/vfxsnu.jpg" class="w-10 h-10 rounded object-cover shadow-lg">
+      <div class="flex-1 min-w-0">
+        <div id="np-title" class="font-bold text-xs truncate text-white">Ну какая ты</div>
+        <div class="text-[9px] text-gray-500">Propavshiy</div>
+      </div>
+      <button onclick="togglePlay()" class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs">
+        <i id="np-play-icon" class="fa-solid fa-play"></i>
+      </button>
     </div>
   </div>
 
-  <div id="track" class="mt-10 border-t border-[#111e3d] pt-6">
-    <div class="flex justify-between items-end mb-4 px-1">
+  <div class="mt-8">
+    <div class="flex justify-between items-end mb-4">
       <p class="text-[9px] tracking-[0.3em] text-gray-700 uppercase">мои плейлисты</p>
       <div class="text-blue-500 text-[10px] flex items-center gap-1.5 font-bold">
         свайпай <i class="fa-solid fa-arrow-right-long swipe-hint"></i>
       </div>
     </div>
-    
-    <div id="playlists-container" class="horizontal-scroll">
-      </div>
+    <div id="playlists-container" class="horizontal-scroll"></div>
   </div>
 
   <div id="sell" class="mt-8 border-t border-[#111e3d] pt-6">
@@ -128,7 +97,7 @@
     <div class="p-4 bg-[#050a18] border border-[#111e3d] rounded text-center">
       <div class="text-blue-400 font-mono font-bold text-sm mb-1">@OHA_M5F9O_CS</div>
       <div class="text-[10px] text-gray-600 mb-3">@OHA_F9O • OHA_M5G9O</div>
-      <a href="https://t.me/Propavshiy_Wexon" target="_blank" class="inline-block bg-blue-700 text-white text-[10px] px-6 py-2 rounded font-bold uppercase tracking-widest active:scale-95 transition-all">Купить</a>
+      <a href="https://t.me/Propavshiy_Wexon" target="_blank" class="inline-block bg-blue-700 text-white text-[10px] px-6 py-2 rounded font-bold uppercase tracking-widest active:scale-95">Купить</a>
     </div>
   </div>
 
@@ -136,25 +105,29 @@
 </div>
 
 <div id="player">
-  <div class="max-w-md mx-auto px-5 py-3 flex items-center gap-3">
-    <img id="player-cover" src="" class="w-10 h-10 rounded object-cover">
-    <div class="flex-1 min-w-0">
-      <div id="player-title" class="font-bold text-xs truncate text-white">Title</div>
-      <div id="player-artist" class="text-[10px] text-gray-500">Propavshiy</div>
-      <div class="w-full h-0.5 bg-[#111e3d] mt-2 rounded-full overflow-hidden">
-        <div id="p-progress" class="h-full bg-blue-600 w-0 transition-all duration-100 linear"></div>
+  <div class="max-w-md mx-auto px-5 py-3">
+    <div class="flex items-center gap-3">
+      <img id="player-cover" src="" class="w-10 h-10 rounded object-cover border border-gray-800">
+      <div class="flex-1 min-w-0">
+        <div id="player-title" class="font-bold text-xs truncate text-white">Title</div>
+        <div class="flex justify-between items-center mt-1">
+          <span id="p-current" class="text-[8px] text-gray-500 tabular-nums">0:00</span>
+          <span id="p-duration" class="text-[8px] text-gray-600 tabular-nums">0:00</span>
+        </div>
+        <div class="w-full h-0.5 bg-[#111e3d] mt-1 rounded-full overflow-hidden">
+          <div id="p-progress" class="h-full bg-blue-600 w-0"></div>
+        </div>
       </div>
+      <button onclick="togglePlay()" class="w-10 h-10 bg-white text-black rounded-full flex items-center justify-center active:scale-90">
+        <i id="main-play-icon" class="fa-solid fa-play"></i>
+      </button>
     </div>
-    <button onclick="togglePlay()" class="w-10 h-10 bg-white text-black rounded-full flex items-center justify-center active:scale-90 transition-transform">
-      <i id="main-play-icon" class="fa-solid fa-play"></i>
-    </button>
   </div>
 </div>
 
 <audio id="audio" preload="metadata"></audio>
 
 <script>
-  // Треки
   const allTracks = [
     { title: "Ну какая ты", cover: "https://files.catbox.moe/vfxsnu.jpg", audio: "https://files.catbox.moe/ze0xwj.m4a" },
     { title: "Бессильно", cover: "https://files.catbox.moe/xdmwkt.jpg", audio: "https://files.catbox.moe/9ibdq9.mp3" },
@@ -174,12 +147,10 @@
     { title: "кровати", cover: "https://files.catbox.moe/49bzxd.jpg", audio: "https://files.catbox.moe/noulzy.mp3" }
   ];
 
-  // Переменные
   let currentIndex = 0;
   let isPlaying = false;
   const audio = document.getElementById('audio');
 
-  // Меню
   function toggleMenu() {
     const d = document.getElementById('dropdown');
     d.style.display = d.style.display === 'block' ? 'none' : 'block';
@@ -188,11 +159,7 @@
     document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
     document.getElementById('dropdown').style.display = 'none';
   }
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.relative')) document.getElementById('dropdown').style.display = 'none';
-  });
 
-  // Рендер плейлистов по 4
   function renderPlaylists() {
     const container = document.getElementById('playlists-container');
     for (let i = 0; i < allTracks.length; i += 4) {
@@ -200,14 +167,13 @@
       const page = document.createElement('div');
       page.className = 'playlist-page pr-4';
       page.innerHTML = `
-        <div class="text-[8px] text-gray-700 uppercase mb-2.5 ml-1">Мой плейлист ${Math.floor(i/4)+1}</div>
+        <div class="text-[8px] text-gray-700 uppercase mb-2 ml-1">Мой плейлист ${Math.floor(i/4)+1}</div>
         <div class="grid grid-cols-2 gap-2.5">
           ${group.map((t, idx) => `
             <div onclick="playTrack(${i + idx})" class="bg-[#050a18] rounded overflow-hidden border border-[#111e3d] p-1.5 active:scale-95 transition-all cursor-pointer">
               <img src="${t.cover}" class="w-full aspect-square object-cover rounded">
-              <div class="p-1 mt-1.5">
+              <div class="p-1 mt-1 text-center">
                 <div class="font-bold text-[9px] truncate text-white">${t.title}</div>
-                <div class="text-[7px] text-gray-600">Propavshiy</div>
               </div>
             </div>
           `).join('')}
@@ -217,33 +183,53 @@
     }
   }
 
-  // Плеер
   function playTrack(i) {
     currentIndex = i;
     const t = allTracks[i];
     audio.src = t.audio;
+    document.getElementById('np-cover').src = t.cover;
     document.getElementById('player-cover').src = t.cover;
+    document.getElementById('np-title').textContent = t.title;
     document.getElementById('player-title').textContent = t.title;
-    audio.play().catch(e => console.log("Нажми Play"));
+    audio.play();
     isPlaying = true;
     document.getElementById('player').classList.add('active');
-    document.getElementById('main-play-icon').className = 'fa-solid fa-pause';
+    updateIcons();
   }
 
   function togglePlay() {
-    if (isPlaying) { audio.pause(); isPlaying = false; }
-    else { audio.play(); isPlaying = true; }
-    document.getElementById('main-play-icon').className = isPlaying ? 'fa-solid fa-pause' : 'fa-solid fa-play';
+    if (isPlaying) audio.pause(); else audio.play();
+    isPlaying = !isPlaying;
+    updateIcons();
+  }
+
+  function updateIcons() {
+    const icon = isPlaying ? 'fa-pause' : 'fa-play';
+    document.getElementById('np-play-icon').className = `fa-solid ${icon}`;
+    document.getElementById('main-play-icon').className = `fa-solid ${icon}`;
+  }
+
+  function fmtTime(s) {
+    if(!s || isNaN(s)) return "0:00";
+    const m = Math.floor(s/60);
+    const sec = Math.floor(s%60);
+    return `${m}:${sec < 10 ? '0' : ''}${sec}`;
   }
 
   audio.ontimeupdate = () => {
     if (audio.duration) {
       document.getElementById('p-progress').style.width = (audio.currentTime / audio.duration) * 100 + '%';
+      document.getElementById('p-current').innerText = fmtTime(audio.currentTime);
+      document.getElementById('p-duration').innerText = fmtTime(audio.duration);
     }
   };
-  audio.onended = () => { playTrack((currentIndex + 1) % allTracks.length); };
 
-  window.onload = renderPlaylists;
+  window.onload = () => {
+    renderPlaylists();
+    const first = allTracks[0];
+    document.getElementById('player-cover').src = first.cover;
+    document.getElementById('player-title').textContent = first.title;
+  };
 </script>
 </body>
 </html>
