@@ -17,17 +17,32 @@
       overflow-x: hidden; 
     }
 
-    /* Синий неон как на скриншоте */
+    /* Анимация неона для аватарки */
     @keyframes neon-glow {
       0%, 100% { border-color: #004cff; box-shadow: 0 0 5px #004cff; }
       50% { border-color: #1a62ff; box-shadow: 0 0 15px #1a62ff; }
     }
 
+    /* Анимация для плашек (C++, Python и т.д.) */
+    @keyframes floating {
+      0%, 100% { transform: translateY(0); border-color: #1e3a8a; }
+      50% { transform: translateY(-3px); border-color: #3b82f6; box-shadow: 0 0 8px rgba(59, 130, 246, 0.3); }
+    }
+
+    /* Анимация для карточек статистики */
+    @keyframes pulse-card {
+      0%, 100% { transform: scale(1); border-color: #111e3d; }
+      50% { transform: scale(1.03); border-color: #1e3a8a; }
+    }
+
+    /* Анимация текста свайпа */
+    @keyframes swipe-hint {
+      0%, 100% { transform: translateX(0); opacity: 0.5; }
+      50% { transform: translateX(6px); opacity: 1; }
+    }
+
     .avatar-wrapper {
-      position: relative;
-      width: 90px;
-      height: 90px;
-      margin: 0 auto;
+      position: relative; width: 90px; height: 90px; margin: 0 auto;
     }
     .avatar { 
       width: 100%; height: 100%; border-radius: 50%;
@@ -39,42 +54,33 @@
       border-radius: 50%; box-shadow: 0 0 10px #004cff;
     }
 
-    /* Анимированное выпадающее меню */
     #dropdown {
-      display: none;
-      position: absolute;
-      top: 50px; right: 16px;
-      background: #08112b;
-      border: 1px solid #111e3d;
-      border-radius: 8px;
-      width: 160px;
-      z-index: 1000;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      overflow: hidden;
-      transform-origin: top right;
-      animation: menuFade 0.2s ease-out;
+      display: none; position: absolute; top: 50px; right: 16px;
+      background: #08112b; border: 1px solid #111e3d; border-radius: 8px;
+      width: 160px; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      overflow: hidden; transform-origin: top right; animation: menuFade 0.2s ease-out;
     }
-    @keyframes menuFade {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
-    .menu-item {
-      padding: 12px 16px;
-      font-size: 12px;
-      color: white;
-      cursor: pointer;
-      border-bottom: 1px solid #111e3d;
-      transition: background 0.2s;
-    }
-    .menu-item:last-child { border: none; }
+    @keyframes menuFade { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+    .menu-item { padding: 12px 16px; font-size: 12px; color: white; cursor: pointer; border-bottom: 1px solid #111e3d; transition: background 0.2s; }
     .menu-item:hover { background: #1e3a8a; }
 
+    /* Плашки навыков */
     .pill { 
       font-size: 0.65rem; padding: 3px 10px; 
       background-color: #08112b; color: #3b82f6; 
-      border: 1px solid #1e3a8a; border-radius: 4px; 
+      border: 1px solid #1e3a8a; border-radius: 4px;
+      animation: floating 3s ease-in-out infinite;
     }
-    .stat-card { background-color: #050a18; border: 1px solid #111e3d; border-radius: 4px; padding: 10px; }
+    .pill:nth-child(2n) { animation-delay: 0.4s; }
+    .pill:nth-child(3n) { animation-delay: 0.8s; }
+
+    /* Статистика */
+    .stat-card { 
+      background-color: #050a18; border: 1px solid #111e3d; border-radius: 4px; padding: 10px;
+      animation: pulse-card 4s infinite ease-in-out;
+    }
+
+    .swipe-text { font-size: 8px; color: #3b82f6; letter-spacing: 0.1em; animation: swipe-hint 1.5s infinite; }
     
     #player {
       position: fixed; bottom: 0; left: 0; right: 0;
@@ -82,8 +88,9 @@
       transform: translateY(100%); transition: transform 0.3s; z-index: 100; padding-bottom: 20px;
     }
     #player.active { transform: translateY(0); }
-    .horizontal-scroll { scrollbar-width: none; }
+    .horizontal-scroll { scrollbar-width: none; scroll-snap-type: x mandatory; }
     .horizontal-scroll::-webkit-scrollbar { display: none; }
+    .snap-item { scroll-snap-align: start; flex-shrink: 0; width: 100%; }
   </style>
 </head>
 <body class="pb-36">
@@ -92,7 +99,6 @@
   <div class="flex justify-between items-center text-xs text-gray-600 mb-6 font-mono relative">
     <span>propavshiy.space</span>
     <div class="flex gap-4 items-center">
-      <i class="fa-solid fa-chevron-down"></i>
       <div class="cursor-pointer p-1" onclick="toggleMenu()">
         <i class="fa-solid fa-ellipsis-vertical text-blue-500 text-lg"></i>
       </div>
@@ -126,16 +132,16 @@
   </div>
 
   <div class="grid grid-cols-3 gap-2 mt-6">
-    <div class="stat-card text-center">
-      <div class="text-lg font-bold text-white tracking-tight">3+</div>
+    <div class="stat-card text-center" style="animation-delay: 0s;">
+      <div class="text-lg font-bold text-white">3+</div>
       <div class="text-[7px] text-gray-600 uppercase tracking-wider">Years</div>
     </div>
-    <div class="stat-card text-center">
-      <div class="text-lg font-bold text-white tracking-tight">5+</div>
+    <div class="stat-card text-center" style="animation-delay: 0.5s;">
+      <div class="text-lg font-bold text-white">5+</div>
       <div class="text-[7px] text-gray-600 uppercase tracking-wider">Projects</div>
     </div>
-    <div class="stat-card text-center">
-      <div class="text-lg font-bold text-blue-500 tracking-tight">C++</div>
+    <div class="stat-card text-center" style="animation-delay: 1s;">
+      <div class="text-lg font-bold text-blue-500">C++</div>
       <div class="text-[7px] text-gray-600 uppercase tracking-wider">Main</div>
     </div>
   </div>
@@ -143,20 +149,25 @@
   <div id="track" class="mt-8 border-t border-[#111e3d] pt-4">
     <p class="text-[9px] tracking-[0.3em] text-gray-700 mb-2 uppercase">now playing</p>
     <div class="p-2 flex gap-2.5 items-center bg-[#050a18] rounded border border-[#111e3d]">
-      <img id="np-cover" src="https://files.catbox.moe/vfxsnu.jpg" class="w-10 h-10 rounded object-cover">
+      <img id="np-cover" src="" class="w-10 h-10 rounded object-cover">
       <div class="flex-1 min-w-0">
         <div id="np-title" class="font-bold text-xs truncate text-white">Загрузка...</div>
         <div id="np-artist" class="text-[10px] text-gray-500">Propavshiy</div>
       </div>
-      <button onclick="togglePlay()" class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs">
+      <button onclick="togglePlay()" class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs active:scale-90 transition-transform">
         <i id="np-play-icon" class="fa-solid fa-play"></i>
       </button>
     </div>
   </div>
 
   <div class="mt-8">
-    <p class="text-[9px] tracking-[0.3em] text-gray-700 mb-3 uppercase">мои плейлисты</p>
-    <div id="playlists-container" class="flex gap-4 overflow-x-auto horizontal-scroll snap-x snap-mandatory pb-4"></div>
+    <div class="flex justify-between items-end mb-3">
+        <p class="text-[9px] tracking-[0.3em] text-gray-700 uppercase">мои плейлисты 1</p>
+        <div class="swipe-text uppercase font-bold">Свайпай <i class="fa-solid fa-arrow-right-long ml-1"></i></div>
+    </div>
+    <div id="playlists-container" class="flex gap-4 overflow-x-auto horizontal-scroll pb-4">
+        <!-- Сетки генерируются через JS -->
+    </div>
   </div>
 
   <div id="sell" class="mt-8 border-t border-[#111e3d] pt-4">
@@ -168,11 +179,11 @@
     </div>
   </div>
 
-  <a href="https://t.me/Propavshiy_Wexon" target="_blank" class="mt-6 flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-600 text-white font-bold py-3 rounded text-xs transition-all">
+  <a href="https://t.me/Propavshiy_Wexon" target="_blank" class="mt-6 flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-600 text-white font-bold py-3 rounded text-xs transition-all active:scale-95">
     <i class="fa-brands fa-telegram text-sm"></i> СВЯЗАТЬСЯ В TELEGRAM
   </a>
 
-  <div class="text-center text-[9px] text-gray-800 mt-10 pb-6 font-mono uppercase">Propavshiy • 2025</div>
+  <div class="text-center text-[9px] text-gray-800 mt-10 pb-6 font-mono uppercase">Propavshiy • 2026</div>
 </div>
 
 <div id="player">
@@ -181,20 +192,20 @@
       <img id="player-cover" src="" class="w-9 h-9 rounded object-cover">
       <div class="flex-1 min-w-0">
         <div id="player-title" class="font-bold text-xs truncate text-white">Title</div>
-        <div id="player-artist" class="text-[10px] text-gray-500">Artist</div>
+        <div id="player-artist" class="text-[10px] text-gray-500">Propavshiy</div>
       </div>
       <div class="flex items-center gap-4 text-lg">
-        <button onclick="prevTrack()" class="text-gray-600"><i class="fa-solid fa-backward-step"></i></button>
-        <button onclick="togglePlay()" class="w-9 h-9 bg-white text-black rounded-full flex items-center justify-center">
+        <button onclick="prevTrack()" class="text-gray-600 active:text-white"><i class="fa-solid fa-backward-step"></i></button>
+        <button onclick="togglePlay()" class="w-9 h-9 bg-white text-black rounded-full flex items-center justify-center active:scale-90 transition-transform">
           <i id="main-play-icon" class="fa-solid fa-play"></i>
         </button>
-        <button onclick="nextTrack()" class="text-gray-600"><i class="fa-solid fa-forward-step"></i></button>
+        <button onclick="nextTrack()" class="text-gray-600 active:text-white"><i class="fa-solid fa-forward-step"></i></button>
       </div>
     </div>
     <div class="mt-3 flex items-center gap-2 text-[9px]">
       <span id="p-current" class="text-gray-600">0:00</span>
-      <div class="flex-1 h-0.5 bg-[#111e3d] rounded-full relative" onclick="seek(event)">
-        <div id="p-progress" class="h-full bg-blue-600 rounded-full w-0"></div>
+      <div class="flex-1 h-0.5 bg-[#111e3d] rounded-full relative overflow-hidden">
+        <div id="p-progress" class="h-full bg-blue-600 w-0 transition-all"></div>
       </div>
       <span id="p-duration" class="text-gray-700">0:00</span>
     </div>
@@ -204,25 +215,26 @@
 <audio id="audio" preload="metadata"></audio>
 
 <script>
-  // Меню и Навигация
-  function toggleMenu() {
-    const d = document.getElementById('dropdown');
-    d.style.display = d.style.display === 'block' ? 'none' : 'block';
-  }
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.relative')) document.getElementById('dropdown').style.display = 'none';
-  });
-  function scrollToId(id) {
-    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-    document.getElementById('dropdown').style.display = 'none';
-  }
-
-  // Плеер
-  const allTracks = [
-    { title: "Ну какая ты", artist: "Propavshiy", cover: "https://files.catbox.moe/vfxsnu.jpg", audio: "https://files.catbox.moe/ze0xwj.m4a" },
-    { title: "Бессильно", artist: "Propavshiy", cover: "https://files.catbox.moe/xdmwkt.jpg", audio: "https://files.catbox.moe/9ibdq9.mp3" },
-    { title: "Диалог", artist: "Propavshiy", cover: "https://files.catbox.moe/a1c0xn.jpg", audio: "https://files.catbox.moe/huwdrn.mp3" },
-    { title: "Наше время", artist: "Propavshiy", cover: "https://files.catbox.moe/qqdlh3.jpg", audio: "https://files.catbox.moe/l166uq.mp3" }
+  // Объединенный список: 4 старых + 12 новых = 16 треков
+  const tracklist = [
+    // Твои первые 4
+    { title: "Ну какая ты", cover: "https://files.catbox.moe/vfxsnu.jpg", url: "https://files.catbox.moe/ze0xwj.m4a" },
+    { title: "Бессильно", cover: "https://files.catbox.moe/xdmwkt.jpg", url: "https://files.catbox.moe/9ibdq9.mp3" },
+    { title: "Диалог", cover: "https://files.catbox.moe/a1c0xn.jpg", url: "https://files.catbox.moe/huwdrn.mp3" },
+    { title: "Наше время", cover: "https://files.catbox.moe/qqdlh3.jpg", url: "https://files.catbox.moe/l166uq.mp3" },
+    // Остальные 12
+    { title: "Never Allow", cover: "https://files.catbox.moe/rpsk7t.jpg", url: "https://files.catbox.moe/rkfip7.m4a" },
+    { title: "Зима", cover: "https://files.catbox.moe/1e8qa7.jpg", url: "https://files.catbox.moe/0w2yvl.m4a" },
+    { title: "8 миля", cover: "https://files.catbox.moe/gggc5y.png", url: "https://files.catbox.moe/tcu8te.m4a" },
+    { title: "Наоборот", cover: "https://files.catbox.moe/yjbba7.png", url: "https://files.catbox.moe/awz24d.m4a" },
+    { title: "Устал", cover: "https://files.catbox.moe/qzb3c1.webp", url: "https://files.catbox.moe/7dozr5.mp3" },
+    { title: "Миражи", cover: "https://files.catbox.moe/lqqz2a.jpg", url: "https://files.catbox.moe/gkicn1.mp3" },
+    { title: "Алготрип", cover: "https://files.catbox.moe/lx8y0e.jpg", url: "https://files.catbox.moe/6hrc02.mp3" },
+    { title: "Скучаю", cover: "https://files.catbox.moe/5ppugw.jpg", url: "https://files.catbox.moe/grb3mq.mp3" },
+    { title: "Ты это знала", cover: "https://files.catbox.moe/262vto.jpg", url: "https://files.catbox.moe/hqv1pk.mp3" },
+    { title: "Раны", cover: "https://files.catbox.moe/wuqkfr.jpg", url: "https://files.catbox.moe/rln061.mp3" },
+    { title: "Одиноко", cover: "https://files.catbox.moe/wl9oof.jpg", url: "https://files.catbox.moe/xlh67f.mp3" },
+    { title: "кровати", cover: "https://files.catbox.moe/49bzxd.jpg", url: "https://files.catbox.moe/noulzy.mp3" }
   ];
 
   let currentIndex = 0;
@@ -231,27 +243,34 @@
 
   function renderPlaylists() {
     const container = document.getElementById('playlists-container');
-    const group = allTracks; 
-    const div = document.createElement('div');
-    div.className = 'flex-shrink-0 w-full';
-    div.innerHTML = `<div class="grid grid-cols-2 gap-2">
-      ${group.map((t, i) => `
-        <div onclick="playTrack(${i})" class="bg-[#050a18] rounded overflow-hidden border border-[#111e3d] p-1">
+    container.innerHTML = '';
+    
+    // Делим на сетки 2x2 (по 4 трека на страницу)
+    for (let i = 0; i < tracklist.length; i += 4) {
+      const page = document.createElement('div');
+      page.className = 'snap-item';
+      const grid = document.createElement('div');
+      grid.className = 'grid grid-cols-2 gap-2';
+      
+      const chunk = tracklist.slice(i, i + 4);
+      grid.innerHTML = chunk.map((t, idx) => `
+        <div onclick="playTrack(${i + idx})" class="bg-[#050a18] rounded overflow-hidden border border-[#111e3d] p-1 active:scale-95 transition-transform cursor-pointer">
           <img src="${t.cover}" class="w-full aspect-square object-cover rounded">
           <div class="p-1 mt-1">
             <div class="font-bold text-[9px] truncate text-white">${t.title}</div>
             <div class="text-[7px] text-gray-600">Propavshiy</div>
           </div>
         </div>
-      `).join('')}
-    </div>`;
-    container.appendChild(div);
+      `).join('');
+      page.appendChild(grid);
+      container.appendChild(page);
+    }
   }
 
   function loadTrack(i) {
     currentIndex = i;
-    const t = allTracks[i];
-    audio.src = t.audio;
+    const t = tracklist[i];
+    audio.src = t.url;
     document.getElementById('np-cover').src = t.cover;
     document.getElementById('player-cover').src = t.cover;
     document.getElementById('np-title').textContent = t.title;
@@ -281,12 +300,28 @@
   audio.ontimeupdate = () => {
     const p = (audio.currentTime / audio.duration) * 100;
     document.getElementById('p-progress').style.width = p + '%';
-    document.getElementById('p-current').innerText = Math.floor(audio.currentTime/60) + ":" + (Math.floor(audio.currentTime%60)).toString().padStart(2,'0');
-    document.getElementById('p-duration').innerText = Math.floor(audio.duration/60) + ":" + (Math.floor(audio.duration%60)).toString().padStart(2,'0');
+    document.getElementById('p-current').innerText = formatTime(audio.currentTime);
+    if(audio.duration) document.getElementById('p-duration').innerText = formatTime(audio.duration);
   };
 
-  function nextTrack() { playTrack((currentIndex + 1) % allTracks.length); }
-  function prevTrack() { playTrack((currentIndex - 1 + allTracks.length) % allTracks.length); }
+  function formatTime(sec) {
+    let m = Math.floor(sec / 60);
+    let s = Math.floor(sec % 60);
+    return m + ":" + (s < 10 ? '0' + s : s);
+  }
+
+  function nextTrack() { playTrack((currentIndex + 1) % tracklist.length); }
+  function prevTrack() { playTrack((currentIndex - 1 + tracklist.length) % tracklist.length); }
+
+  function toggleMenu() {
+    const d = document.getElementById('dropdown');
+    d.style.display = d.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function scrollToId(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('dropdown').style.display = 'none';
+  }
 
   window.onload = () => {
     renderPlaylists();
